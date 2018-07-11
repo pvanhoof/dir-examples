@@ -1,0 +1,9 @@
+
+MAJOR_VERSION = 3
+MINOR_VERSION = 2
+PATCH_VERSION = 1
+
+isEmpty(PREFIX) {
+	PREFIX = /usr
+}
+
