@@ -14,11 +14,27 @@ https://autotools.io/libtool/version.html
 
 To try this example out, go to the qmake-example directory and type
 
-mkdir=_test
-qmake PREFIX=$PWD/_test
-make
-make install
-echo Results:
-tree _test
-find _test
+    cd qmake-example
+    mkdir=_test
+    qmake PREFIX=$PWD/_test
+    make
+    make install
+    echo Results:
+    tree _test
+    find _test
+
+This should give you this:
+
+    _test/
+    ├── include
+    │   └── qmake-example-3.2
+    │       └── qmake-example.h
+    └── lib
+        ├── libqmake-example-3.2.so -> libqmake-example-3.2.so.3.2.1
+        ├── libqmake-example-3.2.so.3 -> libqmake-example-3.2.so.3.2.1
+        ├── libqmake-example-3.2.so.3.2 -> libqmake-example-3.2.so.3.2.1
+        ├── libqmake-example-3.2.so.3.2.1
+        ├── libqmake-example-3.la
+        └── pkgconfig
+            └── qmake-example-3.pc
 
