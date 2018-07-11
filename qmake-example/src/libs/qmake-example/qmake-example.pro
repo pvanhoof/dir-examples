@@ -23,7 +23,7 @@ QMAKE_SUBSTITUTES += config.h.in
 
 ## Our example happens to use QDebug, so we need QtCore here
 
-QT=core
+QT = core
 
 ## This is of course optional
 
