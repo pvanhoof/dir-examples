@@ -43,7 +43,7 @@ CONFIG += create_pc create_prl no_install_prl
 SOURCES = \
 	qmake-example.cpp
 
-## Project headers
+## Project's private and public headers
 
 HEADERS = \
 	qmake-example.h
@@ -52,7 +52,7 @@ HEADERS = \
 
 headers.path = $${PREFIX}/include/qmake-example-$${MAJOR_VERSION}"."$${MINOR_VERSION}
 
-## Here will go all the installed headers
+## Here we put only the publicly installed headers
 
 headers.files = $${HEADERS}
 
@@ -72,6 +72,7 @@ QMAKE_PKGCONFIG_INCDIR = $$headers.path
 QMAKE_PKGCONFIG_DESTDIR = pkgconfig
 QMAKE_PKGCONFIG_PREFIX = $${PREFIX}
 QMAKE_PKGCONFIG_VERSION = $$VERSION
+QMAKE_PKGCONFIG_REQUIRES = Qt5Core
 
 ## Installation targets (the pkg-config seems to install automatically)
 
