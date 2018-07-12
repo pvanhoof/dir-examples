@@ -8,9 +8,51 @@ have a so called API version in the library's name.
 Information on this can be found in the Autotools Mythbuster docs:
 https://autotools.io/libtool/version.html
 
+## What is right?
+
+In the examples I try to follow as much as possible the Autotools
+Mythbuster docs (https://autotools.io/libtool/version.html)
+
+You'll notice that a library called package will in /usr/lib often be
+called something like libpackage-4.3.so.2.1.0
+
+We call the 4.3 part the API version, and the 2.1.0 the current,
+revision and age version.
+
+The document libtool/version.html on autotools.io states:
+
+The rules of thumb, when dealing with these values are:
+
+* Always increase the revision value.
+* Increase the current value whenever an interface has been added, removed or changed.
+* Increase the age value only if the changes made to the ABI are backward compatible.
+
+For the API version I will typically use the rules from http://semver.org:
+
+Given a version number MAJOR.MINOR.PATCH, increment the:
+
+1. MAJOR version when you make incompatible API changes,
+2. MINOR version when you add functionality in a backwards-compatible manner, and
+3. PATCH version when you make backwards-compatible bug fixes.
+
+Many people use many build environments (autotools, qmake, cmake, meson, you name it).
+Nowadays almost all of those build environments support pkg-config out of the box. I
+consider it a necessity to ship with a useful and correct pkg-config .pc file.
+
+When you have an API then that API can change over time. You typically want
+to version those API changes so that the users of your library can adopt to
+newer versions of the API.
+
+I consider it a necessity to ship API headers in a per API-version different
+location. This means that your API version number must be part of the
+include-path. This also implies that the pkg-config .pc file must also be versioned.
+
+For example using earlier mentioned API-version 4.3, /usr/include/package-4.3
+
+
 ## Supported build environments
 
-1. qmake in the qmake-example
+### qmake in the qmake-example
 
 To try this example out, go to the qmake-example directory and type
 
@@ -42,7 +84,8 @@ When you now use pkg-config, you get a nice CFLAGS and LIBS line back (I'm repla
 
     $ export PKG_CONFIG_PATH=$PWD/_test/lib/pkgconfig
     $ pkg-config qmake-example-3 --cflags
-    -I$PWD/_test//include/qmake-example-3.2 -I/usr/include/i386-linux-gnu/qt5/QtCore -I/usr/include/i386-linux-gnu/qt5
+    -I$PWD/_test//include/qmake-example-3.2 -I/usr/include/i386-linux-gnu/qt5/QtCore
+    -I/usr/include/i386-linux-gnu/qt5
     $ pkg-config qmake-example-3 --libs
     -L$PWD/_test//lib -lqmake-example-3.2 -lQt5Core
     $
