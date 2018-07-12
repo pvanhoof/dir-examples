@@ -30,28 +30,35 @@ CURRENT_VERSION = $${MAJOR_VERSION}
 REVISION_VERSION = $${MINOR_VERSION}
 AGE_VERSION = $${PATCH_VERSION}
 
-## The libtool support in qmake (wrongly) assumes VERSION variable to
-## contain current, revision and age. Most people of course use a semver
-## x.y.z numbering for VERSION (so don't get confused, this is just for
-## configuring the compile_libtool stuff).
+## The libtool support in qmake assumes the VERSION variable to contain
+## current, revision and age. Most people use (or think that) a semver
+## x.y.z numbering for VERSION is what to use (so don't get confused,
+## this is for configuring the compile_libtool stuff). I'm using the
+## same variable names as in cmake here.
 
 VERSION = $${CURRENT_VERSION}"."$${REVISION_VERSION}"."$${AGE_VERSION}
 
 ## We will therefor also make ourselves a semver-version, to be put in
-## the config.h as a VERSION define. Don't get confused about this.
+## the config.h as a VERSION #define. Again, don't get confused about this.
 
 SEMVER_VERSION = $${MAJOR_VERSION}"."$${MINOR_VERSION}"."$${PATCH_VERSION}
 
+## The SOVERSION is the API version. I use the same variable names as
+## in the cmake world here. Usually we can take major and minor from semver
+## for this.
+
+SOVERSION = $${MAJOR_VERSION}"."$${MINOR_VERSION}
+
 ## According to https://autotools.io/libtool/version.html, section 4.3
 ## Multiple libraries versions, we should have as target-name the API
-## version in the library's name. The semver version's MAJOR and MINOR
-## are perfect candidates for this.
+## version in the library's name. The so called SOVERSION variable is
+## a perfect candidates for this.
 ##
 ## Noting that for example a project like GLib keeps the API version
 ## number on 2.0, while they change the minor. They say that GLib 2.4
 ## has a GLib 2.0 API, I guess (up to you when maintaining a library)
 
-TARGET = qmake-example-$${MAJOR_VERSION}"."$${MINOR_VERSION}
+TARGET = qmake-example-$${SOVERSION}
 
 ## We will write a define in config.h for access to the semver.org
 ## version as a double quoted string
@@ -86,7 +93,7 @@ HEADERS = \
 
 ## We will install the headers in a API specific include path
 
-headers.path = $${PREFIX}/include/qmake-example-$${MAJOR_VERSION}"."$${MINOR_VERSION}
+headers.path = $${PREFIX}/include/qmake-example-$${SOVERSION}
 
 ## Here we put only the publicly installed headers
 
@@ -109,6 +116,8 @@ QMAKE_PKGCONFIG_LIBDIR = $$target.path
 QMAKE_PKGCONFIG_INCDIR = $$headers.path
 QMAKE_PKGCONFIG_DESTDIR = pkgconfig
 QMAKE_PKGCONFIG_PREFIX = $${PREFIX}
+
+# Usually people take the semver version here
 QMAKE_PKGCONFIG_VERSION = $${SEMVER_VERSION}
 
 # This is what our library depends on

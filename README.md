@@ -16,8 +16,8 @@ Mythbuster docs (https://autotools.io/libtool/version.html)
 You'll notice that a library called package will in /usr/lib often be
 called something like libpackage-4.3.so.2.1.0
 
-We call the 4.3 part the API version, and the 2.1.0 the current,
-revision and age version.
+We call the 4.3 part the API version (the SOVERSION), and the 2.1.0 the current,
+revision and age version (the ABI-version or VERSION).
 
 The document libtool/version.html on autotools.io states:
 
@@ -45,7 +45,7 @@ newer versions of the API.
 
 I consider it a necessity to ship API headers in a per API-version different
 location. This means that your API version number must be part of the
-include-path. This also implies that the pkg-config .pc file must also be versioned.
+include-path. This implies that the pkg-config .pc file must also be versioned.
 
 For example using earlier mentioned API-version 4.3, /usr/include/package-4.3
 
