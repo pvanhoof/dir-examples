@@ -118,3 +118,14 @@ in their own favorite build environment):
     	libicudata.so.57 => /usr/lib/i386-linux-gnu/libicudata.so.57 (0xb4f7d000)
     	libpcre.so.3 => /lib/i386-linux-gnu/libpcre.so.3 (0xb4f04000)
 
+### cmake in the cmake-example
+
+### autotools in the autotools-example
+
+### meson in the meson-example
+
+### qbx in the qbx-example
+
+### Others as contributed by people who took the time to also do it right
+
+
