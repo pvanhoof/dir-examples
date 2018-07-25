@@ -23,12 +23,12 @@ SET_TARGET_PROPERTIES(cmake-example PROPERTIES
 ## number on 2.0, while they change the minor. They say that GLib 2.4
 ## has a GLib 2.0 API, I guess (up to you when maintaining a library)
 
-	         OUTPUT_NAME cmake-example-${CMAKE_EXAMPLE_SOVERSION}
+             OUTPUT_NAME cmake-example-${CMAKE_EXAMPLE_SOVERSION}
 
 ## This is for the ABI version (some people refer to this as the
 ## libtool version. It's the part behind the .so part.
 
-		     VERSION ${CMAKE_EXAMPLE_VERSION}
+             VERSION ${CMAKE_EXAMPLE_VERSION}
 
 ## For some reason I have to assign this property to CURRENT_VERSION
 ## to get somewhat reasonable outcome.
