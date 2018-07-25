@@ -23,11 +23,11 @@ The document libtool/version.html on autotools.io states:
 
 The rules of thumb, when dealing with these values are:
 
-* Always increase the revision value.
 * Increase the current value whenever an interface has been added, removed or changed.
+* Always increase the revision value.
 * Increase the age value only if the changes made to the ABI are backward compatible.
 
-For the API version I will typically use the rules from http://semver.org:
+For the API version I will use the rules from http://semver.org:
 
 Given a version number MAJOR.MINOR.PATCH, increment the:
 
@@ -41,14 +41,24 @@ consider it a necessity to ship with a useful and correct pkg-config .pc file.
 
 When you have an API then that API can change over time. You typically want
 to version those API changes so that the users of your library can adopt to
-newer versions of the API.
+newer versions of the API while at the same time still using older versions of
+the API. For this we need to follow 4.3. Multiple libraries versions of the
+Autotools Mythbuster documentation (https://autotools.io/libtool/version.html)
+which states:
+
+In this situation, the best option is to append part of the library's version information to the library's name, which is exemplified by Glib's libglib-2.0.so.0 soname. To do so, the declaration in the Makefile.am has to be like this:
+
+    lib_LTLIBRARIES = libtest-1.0.la
+    
+    libtest_1_0_la_LDFLAGS = -version-info 0:0:0
 
 I consider it a necessity to ship API headers in a per API-version different
-location. This means that your API version number must be part of the
-include-path. This implies that the pkg-config .pc file must also be versioned.
+location (like /usr/include/glib-2.0). This means that your API version number
+must be part of the include-path. This implies that the pkg-config .pc file
+must also be versioned (like /usr/lib/pkgconfig/glib-2.0.pc)
 
-For example using earlier mentioned API-version 4.3, /usr/include/package-4.3
-
+For example using earlier mentioned API-version 4.3, /usr/include/package-4.3 for
+/usr/lib/libpackage-4.3.so(.2.1.0) having /usr/lib/pkg-config/package-4.3.pc
 
 ## Supported build environments
 
@@ -56,17 +66,15 @@ For example using earlier mentioned API-version 4.3, /usr/include/package-4.3
 
 To try this example out, go to the qmake-example directory and type
 
-    cd qmake-example
-    mkdir=_test
-    qmake PREFIX=$PWD/_test
-    make
-    make install
-    echo Results:
-    tree _test
-    find _test
-
+    $ cd qmake-example
+    $ mkdir=_test
+    $ qmake PREFIX=$PWD/_test
+    $ make
+    $ make install
+ 
 This should give you this:
 
+    $ find _test/
     _test/
     ├── include
     │   └── qmake-example-4.3
@@ -88,7 +96,6 @@ When you now use pkg-config, you get a nice CFLAGS and LIBS line back (I'm repla
     -I/usr/include/i386-linux-gnu/qt5
     $ pkg-config qmake-example-4.3 --libs
     -L$PWD/_test//lib -lqmake-example-4.3 -lQt5Core
-    $
 
 And it means that you can do things like this now (and people who know about pkg-config will now be happy to know that they can use your library in their own favorite build environment). The extra linking is mostly due to Qt5Core of course (only for the purpose of the example):
 
@@ -135,9 +142,9 @@ To try this example out, go to the cmake-example directory and do
     Install the project...
     -- Install configuration: ""
     -- Installing: $PWD/lib/libcmake-example-4.3.so.2.1.0
-    -- Up-to-date: $PWD/_test/lib/libcmake-example-4.3.so.2
-    -- Up-to-date: $PWD/_test/lib/libcmake-example-4.3.so
-    -- Up-to-date: $PWD/_test/include/cmake-example-4.3/cmake-example.h
+    -- Up-to-date: $PWD/lib/libcmake-example-4.3.so.2
+    -- Up-to-date: $PWD/lib/libcmake-example-4.3.so
+    -- Up-to-date: $PWD/include/cmake-example-4.3/cmake-example.h
     -- Up-to-date: $PWD/lib/pkgconfig/cmake-example-4.3.pc
 
 This should give you this:

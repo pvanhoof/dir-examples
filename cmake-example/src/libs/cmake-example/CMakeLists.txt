@@ -42,11 +42,20 @@ SET_TARGET_PROPERTIES(cmake-example PROPERTIES
 ## file to a destination that is API version specific
 
 install (TARGETS cmake-example
-	         LIBRARY DESTINATION lib
+
+## This installs our library to the lib directoru
+             LIBRARY DESTINATION lib
+
+## This installs our library's headers to a API version specific
+## location
+
              PUBLIC_HEADER DESTINATION include/cmake-example-${CMAKE_EXAMPLE_APIVERSION})
+
+## This generates the pkg-config file as cmake-example-4.3.pc
 
 CONFIGURE_FILE("cmake-example.pc.in" "cmake-example-${CMAKE_EXAMPLE_APIVERSION}.pc" @ONLY)
 
-set(INSTALL_PKGCONFIG_DIR "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" CACHE PATH "Installation directory for pkgconfig (.pc) files")
+## This installs the pkg-config file to the right location
 
+set(INSTALL_PKGCONFIG_DIR "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" CACHE PATH "Installation directory for pkgconfig (.pc) files")
 install(FILES cmake-example-${CMAKE_EXAMPLE_APIVERSION}.pc DESTINATION "${INSTALL_PKGCONFIG_DIR}")
