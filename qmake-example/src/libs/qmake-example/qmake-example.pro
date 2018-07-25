@@ -21,22 +21,22 @@ VERSION = $${CURRENT_VERSION}"."$${REVISION_VERSION}"."$${AGE_VERSION}
 
 SEMVER_VERSION = $${MAJOR_VERSION}"."$${MINOR_VERSION}"."$${PATCH_VERSION}
 
-## The SOVERSION is ~ the API version. I use similar variable names as
+## The APIVERSION is ~ the API version. I use similar variable names as
 ## in the cmake world here. Usually we can take major and minor from
 ## semver for this.
 
-SOVERSION = $${MAJOR_VERSION}"."$${MINOR_VERSION}
+APIVERSION = $${MAJOR_VERSION}"."$${MINOR_VERSION}
 
 ## According to https://autotools.io/libtool/version.html, section 4.3
 ## Multiple libraries versions, we should have as target-name the API
-## version in the library's name. The so called SOVERSION variable is
+## version in the library's name. The so called APIVERSION variable is
 ## a perfect candidates for this.
 ##
 ## Noting that for example a project like GLib keeps the API version
 ## number on 2.0, while they change the minor. They say that GLib 2.4
 ## has a GLib 2.0 API, I guess (up to you when maintaining a library)
 
-TARGET = qmake-example-$${SOVERSION}
+TARGET = qmake-example-$${APIVERSION}
 
 ## We will write a define in config.h for access to the semver.org
 ## version as a double quoted string
@@ -71,7 +71,7 @@ HEADERS = \
 
 ## We will install the headers in a API specific include path
 
-headers.path = $${PREFIX}/include/qmake-example-$${SOVERSION}
+headers.path = $${PREFIX}/include/qmake-example-$${APIVERSION}
 
 ## Here we put only the publicly installed headers
 

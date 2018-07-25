@@ -33,7 +33,7 @@ set(CMAKE_EXAMPLE_PATCH_VERSION 0)
 ##
 ## The point of current, revision and age are that they form your ABI
 ## version (the so called VERSION). The point of major, minor (and patch)
-## of semver is that it forms your API version (the so called SOVERSION).
+## of semver is that it forms your API version (the so called APIVERSION).
 
 set(CMAKE_EXAMPLE_CURRENT_VERSION 2)
 set(CMAKE_EXAMPLE_REVISION_VERSION 1)

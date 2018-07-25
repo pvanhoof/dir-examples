@@ -16,7 +16,7 @@ Mythbuster docs (https://autotools.io/libtool/version.html)
 You'll notice that a library called package will in /usr/lib often be
 called something like libpackage-4.3.so.2.1.0
 
-We call the 4.3 part the API version (the SOVERSION), and the 2.1.0 the current,
+We call the 4.3 part the API version (the APIVERSION), and the 2.1.0 the current,
 revision and age version (the ABI-version or VERSION).
 
 The document libtool/version.html on autotools.io states:
