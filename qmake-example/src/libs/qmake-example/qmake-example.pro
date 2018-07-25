@@ -84,7 +84,13 @@ target.path = $${PREFIX}/lib
 
 ## This is the configuration for generating the pkg-config file
 
+# This makes sure that the pkg-config file is qmake-example-4.3.pc
+QMAKE_PKGCONFIG_FILE = $${TARGET}
+
+# This fills in the Name property
 QMAKE_PKGCONFIG_NAME = $${TARGET}
+
+# This fills in the Description property
 QMAKE_PKGCONFIG_DESCRIPTION = An example on how to do it right with qmake
 
 # This is our libdir

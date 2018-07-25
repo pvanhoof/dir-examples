@@ -78,15 +78,15 @@ This should give you this:
         ├── libqmake-example-4.3.so.2.1.0
         ├── libqmake-example-4.la
         └── pkgconfig
-            └── qmake-example-4.pc
+            └── qmake-example-4.3.pc
 
 When you now use pkg-config, you get a nice CFLAGS and LIBS line back (I'm replacing the current path with $PWD in the output each time):
 
     $ export PKG_CONFIG_PATH=$PWD/_test/lib/pkgconfig
-    $ pkg-config qmake-example-4 --cflags
+    $ pkg-config qmake-example-4.3 --cflags
     -I$PWD/_test//include/qmake-example-4.3 -I/usr/include/i386-linux-gnu/qt5/QtCore
     -I/usr/include/i386-linux-gnu/qt5
-    $ pkg-config qmake-example-4 --libs
+    $ pkg-config qmake-example-4.3 --libs
     -L$PWD/_test//lib -lqmake-example-4.3 -lQt5Core
     $
 
@@ -94,7 +94,7 @@ And it means that you can do things like this now (and people who know about pkg
 
     $ export LD_LIBRARY_PATH=$PWD/_test/lib
     $ echo -en "#include <qmake-example.h>\nmain() {} " > test.cpp
-    $ g++ -fPIC test.cpp -o test.o `pkg-config qmake-example-4 --libs --cflags`
+    $ g++ -fPIC test.cpp -o test.o `pkg-config qmake-example-4.3 --libs --cflags`
     $ ldd test.o 
         linux-gate.so.1 (0xb7708000)
         libqmake-example-4.3.so.2 => $PWD/_test/lib/libqmake-example-4.3.so.2 (0xb76fd000)
