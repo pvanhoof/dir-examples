@@ -1,3 +1,5 @@
+cmake_minimum_required (VERSION 2.8.11)
+project (cmake-example)
 
 ## According to https://semver.org/, main page at the top, choosing
 ## the x.y.z in a semver version you must increment the:
@@ -6,8 +8,8 @@
 ##     o. MINOR version when you add functionality in a backwards-compatible manner, and
 ##     o. PATCH version when you make backwards-compatible bug fixes.
 
-MAJOR_VERSION = 4
-MINOR_VERSION = 3
+set(CMAKE_EXAMPLE_MAJOR_VERSION 4)
+set(CMAKE_EXAMPLE_MINOR_VERSION 3)
 
 ## We are not really using PATCH_VERSION, as this should not have any
 ## effect on the binary or API compatibility of the resulting library.
@@ -15,7 +17,7 @@ MINOR_VERSION = 3
 ## The PATCH_VERSION and the AGE_VERSION are similar in nature (and
 ## AGE_VERSION is being used by libtool)
 
-PATCH_VERSION = 0
+set(CMAKE_EXAMPLE_PATCH_VERSION 0)
 
 ## According to https://autotools.io/libtool/version.html, section 4.1
 ## Setting the proper Shared Object Version we need to :
@@ -33,13 +35,8 @@ PATCH_VERSION = 0
 ## version (the so called VERSION). The point of major, minor (and patch)
 ## of semver is that it forms your API version (the so called SOVERSION).
 
-CURRENT_VERSION = 2
-REVISION_VERSION = 1
-AGE_VERSION = 0
-
-## This is just because qmake ..
-
-isEmpty(PREFIX) {
-	PREFIX = /usr
-}
-
+set(CMAKE_EXAMPLE_CURRENT_VERSION 2)
+set(CMAKE_EXAMPLE_REVISION_VERSION 1)
+set(CMAKE_EXAMPLE_AGE_VERSION 0)
+ 
+add_subdirectory (src)

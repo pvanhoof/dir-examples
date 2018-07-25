@@ -1,5 +1,6 @@
-## We get the PREFIX, MAJOR_VERSION, MINOR_VERSION and PATCH_VERSION
-## from this project-wide include. The version numbers are semver.
+## We get the PREFIX, MAJOR_VERSION, MINOR_VERSION, PATCH_VERSION,
+## CURRENT_VERSION, REVISION_VERSION and AGE_VERSION from this
+## project-wide include.
 
 include(../../../qmake-example.pri)
 
@@ -7,34 +8,11 @@ include(../../../qmake-example.pri)
 
 TEMPLATE = lib
 
-## According to https://autotools.io/libtool/version.html, section 4.1
-## Setting the proper Shared Object Version we need to :
-##
-##     o. Increase the current value whenever an interface has been
-##        added, removed or changed.
-##     o. Always increase the revision value.
-##     o. Increase the age value only if the changes made to the ABI
-##        are backward compatible.
-##
-## For simplicity I am for now going to use the three numbers major,
-## minor and patch from semver for libtool's current, revision and age.
-## To be fully correct would changes in both minor and major cause a
-## increment in current, and must revision also always be incremented.
-## But that is hard to show in an example like this.
-##
-## The point of current, revision and age are that they form your ABI
-## version. The point of major, minor (and patch) of semver is that it
-## forms your API version.
-
-CURRENT_VERSION = $${MAJOR_VERSION}
-REVISION_VERSION = $${MINOR_VERSION}
-AGE_VERSION = $${PATCH_VERSION}
-
 ## The libtool support in qmake assumes the VERSION variable to contain
-## current, revision and age. Most people use (or think that) a semver
-## x.y.z numbering for VERSION is what to use (so don't get confused,
+## current, revision and age. Most people think that a semver x.y.z
+## numbering for VERSION is what to use (so don't get confused,
 ## this is for configuring the compile_libtool stuff). I'm using the
-## same variable names as in cmake here.
+## similar variable names as in cmake here for clarity.
 
 VERSION = $${CURRENT_VERSION}"."$${REVISION_VERSION}"."$${AGE_VERSION}
 
@@ -43,9 +21,9 @@ VERSION = $${CURRENT_VERSION}"."$${REVISION_VERSION}"."$${AGE_VERSION}
 
 SEMVER_VERSION = $${MAJOR_VERSION}"."$${MINOR_VERSION}"."$${PATCH_VERSION}
 
-## The SOVERSION is the API version. I use the same variable names as
-## in the cmake world here. Usually we can take major and minor from semver
-## for this.
+## The SOVERSION is ~ the API version. I use similar variable names as
+## in the cmake world here. Usually we can take major and minor from
+## semver for this.
 
 SOVERSION = $${MAJOR_VERSION}"."$${MINOR_VERSION}
 
