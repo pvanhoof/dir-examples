@@ -47,3 +47,6 @@ install (TARGETS cmake-example
 
 CONFIGURE_FILE("cmake-example.pc.in" "cmake-example-${CMAKE_EXAMPLE_SOVERSION}.pc" @ONLY)
 
+set(INSTALL_PKGCONFIG_DIR "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" CACHE PATH "Installation directory for pkgconfig (.pc) files")
+
+install(FILES cmake-example-${CMAKE_EXAMPLE_SOVERSION}.pc DESTINATION "${INSTALL_PKGCONFIG_DIR}")
