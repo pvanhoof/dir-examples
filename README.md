@@ -97,7 +97,7 @@ And it means that you can do things like this now (and people who know about pkg
     $ g++ -fPIC test.cpp -o test.o `pkg-config qmake-example-4 --libs --cflags`
     $ ldd test.o 
         linux-gate.so.1 (0xb7708000)
-        libqmake-example-4.3.so.3 => $PWD/_test/lib/libqmake-example-4.3.so.3 (0xb76fd000)
+        libqmake-example-4.3.so.2 => $PWD/_test/lib/libqmake-example-4.3.so.2 (0xb76fd000)
         libQt5Core.so.5 => /usr/lib/i386-linux-gnu/sse2/libQt5Core.so.5 (0xb71e2000)
         libstdc++.so.6 => /usr/lib/i386-linux-gnu/libstdc++.so.6 (0xb7066000)
         libm.so.6 => /lib/i386-linux-gnu/libm.so.6 (0xb7011000)
