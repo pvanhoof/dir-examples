@@ -17,7 +17,7 @@ You'll notice that a library called package will in /usr/lib often be
 called something like libpackage-4.3.so.2.1.0
 
 We call the 4.3 part the API version (the APIVERSION), and the 2.1.0 the current,
-revision and age version (the ABI-version or VERSION).
+age and revision version (the ABI-version or VERSION).
 
 The document libtool/version.html on autotools.io states:
 
@@ -63,6 +63,8 @@ For example using earlier mentioned API-version 4.3, /usr/include/package-4.3 fo
 ## Supported build environments
 
 ### qmake in the qmake-example
+
+Note that the VERSION must be (current - age).age.revision for qmake
 
 To try this example out, go to the qmake-example directory and type
 
@@ -125,6 +127,8 @@ And it means that you can do things like this now (and people who know about pkg
 
 ### cmake in the cmake-example
 
+Note that the VERSION must be (current - age).age.revision for cmake
+
 To try this example out, go to the cmake-example directory and do
 
     $ cd cmake-example
@@ -183,6 +187,8 @@ And it means that you can do things like this now (and people who know about pkg
 
 ### autotools in the autotools-example
 
+Note that you pass current:revision:age directly with autotools
+
 To try this example out, go to the autotools-example directory and do
 
     $ cd autotools-example
@@ -206,9 +212,9 @@ This should give you this:
     └── lib
         ├── libautotools-example-4.3.a
         ├── libautotools-example-4.3.la
-        ├── libautotools-example-4.3.so -> libautotools-example-4.3.so.2.0.1
-        ├── libautotools-example-4.3.so.2 -> libautotools-example-4.3.so.2.0.1
-        ├── libautotools-example-4.3.so.2.0.1
+        ├── libautotools-example-4.3.so -> libautotools-example-4.3.so.2.1.0
+        ├── libautotools-example-4.3.so.2 -> libautotools-example-4.3.so.2.1.0
+        ├── libautotools-example-4.3.so.2.1.0
         └── pkgconfig
             └── autotools-example-4.3.pc
 
