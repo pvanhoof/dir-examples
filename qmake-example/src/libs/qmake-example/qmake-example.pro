@@ -1,6 +1,8 @@
-## We get the PREFIX, MAJOR_VERSION, MINOR_VERSION, PATCH_VERSION,
-## CURRENT_VERSION, REVISION_VERSION and AGE_VERSION from this
-## project-wide include.
+## We get the PREFIX, QMAKE_EXAMPLE_MAJOR_VERSION, QMAKE_EXAMPLE_SOVERSION,
+## QMAKE_EXAMPLE_MINOR_VERSION, QMAKE_EXAMPLE_PATCH_VERSION,
+## QMAKE_EXAMPLE_CURRENT_VERSION, QMAKE_EXAMPLE_REVISION_VERSION,
+## QMAKE_EXAMPLE_VERSION and QMAKE_EXAMPLE_AGE_VERSION from this project-wide
+## include.
 
 include(../../../qmake-example.pri)
 
@@ -8,24 +10,18 @@ include(../../../qmake-example.pri)
 
 TEMPLATE = lib
 
-## The libtool support in qmake assumes the VERSION variable to contain
-## current, revision and age. Most people think that a semver x.y.z
-## numbering for VERSION is what to use (so don't get confused,
-## this is for configuring the compile_libtool stuff). I'm using the
-## similar variable names as in cmake here for clarity.
-
-VERSION = $${CURRENT_VERSION}"."$${REVISION_VERSION}"."$${AGE_VERSION}
+VERSION = $${QMAKE_EXAMPLE_VERSION}
 
 ## We will therefor also make ourselves a semver-version, to be put in
 ## the config.h as a VERSION #define. Again, don't get confused about this.
 
-SEMVER_VERSION = $${MAJOR_VERSION}"."$${MINOR_VERSION}"."$${PATCH_VERSION}
+SEMVER_VERSION = $${QMAKE_EXAMPLE_MAJOR_VERSION}"."$${QMAKE_EXAMPLE_MINOR_VERSION}"."$${QMAKE_EXAMPLE_PATCH_VERSION}
 
 ## The APIVERSION is ~ the API version. I use similar variable names as
 ## in the cmake world here. Usually we can take major and minor from
 ## semver for this.
 
-APIVERSION = $${MAJOR_VERSION}"."$${MINOR_VERSION}
+APIVERSION = $${QMAKE_EXAMPLE_MAJOR_VERSION}"."$${QMAKE_EXAMPLE_MINOR_VERSION}
 
 ## According to https://autotools.io/libtool/version.html, section 4.3
 ## Multiple libraries versions, we should have as target-name the API

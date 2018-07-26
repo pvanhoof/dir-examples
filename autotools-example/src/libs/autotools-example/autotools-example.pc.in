@@ -1,0 +1,10 @@
+prefix=@prefix@
+exec_prefix=${prefix}
+libdir=${prefix}/lib
+includedir=${prefix}/include/autotools-example-@AUTOTOOLS_EXAMPLE_APIVERSION@
+
+Name: autotools-example-@AUTOTOOLS_EXAMPLE_APIVERSION@
+Description: An example on how to do it right with autotools
+Version: @AUTOTOOLS_EXAMPLE_MAJOR_VERSION@.@AUTOTOOLS_EXAMPLE_MINOR_VERSION@.@AUTOTOOLS_EXAMPLE_PATCH_VERSION@
+Libs: -L${libdir} -lautotools-example-@AUTOTOOLS_EXAMPLE_APIVERSION@
+Cflags: -I${includedir}

@@ -6,8 +6,8 @@
 ##     o. MINOR version when you add functionality in a backwards-compatible manner, and
 ##     o. PATCH version when you make backwards-compatible bug fixes.
 
-MAJOR_VERSION = 4
-MINOR_VERSION = 3
+QMAKE_EXAMPLE_MAJOR_VERSION = 4
+QMAKE_EXAMPLE_MINOR_VERSION = 3
 
 ## We are not really using PATCH_VERSION, as this should not have any
 ## effect on the binary or API compatibility of the resulting library.
@@ -15,7 +15,7 @@ MINOR_VERSION = 3
 ## The PATCH_VERSION and the AGE_VERSION are similar in nature (and
 ## AGE_VERSION is being used by libtool)
 
-PATCH_VERSION = 0
+QMAKE_EXAMPLE_PATCH_VERSION = 0
 
 ## According to https://autotools.io/libtool/version.html, section 4.1
 ## Setting the proper Shared Object Version we need to :
@@ -33,9 +33,19 @@ PATCH_VERSION = 0
 ## version (the so called VERSION). The point of major, minor (and patch)
 ## of semver is that it forms your API version (the so called APIVERSION).
 
-CURRENT_VERSION = 2
-REVISION_VERSION = 1
-AGE_VERSION = 0
+QMAKE_EXAMPLE_CURRENT_VERSION = 3
+QMAKE_EXAMPLE_REVISION_VERSION = 0
+QMAKE_EXAMPLE_AGE_VERSION = 1
+
+QMAKE_EXAMPLE_SOVERSION = $$system("echo $(($$QMAKE_EXAMPLE_CURRENT_VERSION - $$QMAKE_EXAMPLE_AGE_VERSION))")
+
+## The libtool support in qmake assumes the VERSION variable to contain
+## (current-age), age, revision. Some people think that a semver x.y.z
+## numbering for VERSION is what to use (so don't get confused,
+## this is for configuring the compile_libtool stuff). I'm using the
+## similar variable names as in cmake here for clarity.
+
+QMAKE_EXAMPLE_VERSION = $${QMAKE_EXAMPLE_SOVERSION}"."$${QMAKE_EXAMPLE_AGE_VERSION}"."$${QMAKE_EXAMPLE_REVISION_VERSION}
 
 ## This is just because qmake ..
 

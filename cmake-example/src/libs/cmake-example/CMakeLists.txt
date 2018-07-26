@@ -2,12 +2,6 @@
 ## CURRENT_VERSION, REVISION_VERSION and AGE_VERSION from the 
 ## CMakeLists.txt at the root of the project
 
-## The APIVERSION is ~ the API version. Usually we can take major
-## and minor from semver for this.
-
-set(CMAKE_EXAMPLE_APIVERSION ${CMAKE_EXAMPLE_MAJOR_VERSION}.${CMAKE_EXAMPLE_MINOR_VERSION})
-set(CMAKE_EXAMPLE_VERSION ${CMAKE_EXAMPLE_CURRENT_VERSION}.${CMAKE_EXAMPLE_REVISION_VERSION}.${CMAKE_EXAMPLE_AGE_VERSION})
-
 ## We will use the standard add_library capability of cmake
 
 add_library(cmake-example SHARED cmake-example.cpp)
@@ -32,7 +26,7 @@ SET_TARGET_PROPERTIES(cmake-example PROPERTIES
 
 ## For some reason I have to assign this property to CURRENT_VERSION
 ## to get somewhat reasonable outcome.
-             SOVERSION ${CMAKE_EXAMPLE_CURRENT_VERSION}
+             SOVERSION ${CMAKE_EXAMPLE_SOVERSION}
 
 ## The header files to publicly install
 

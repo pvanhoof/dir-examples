@@ -183,10 +183,54 @@ And it means that you can do things like this now (and people who know about pkg
 
 ### autotools in the autotools-example
 
-### meson in the meson-example
+To try this example out, go to the autotools-example directory and do
 
-### qbx in the qbx-example
+    $ cd autotools-example
+    $ mkdir _test
+    $ libtoolize
+    $ aclocal
+    $ autoheader
+    $ autoconf
+    $ automake --add-missing
+    $ ./configure --prefix=$PWD/_test
+    $ make
+    $ make install
 
-### Others as contributed by people who took the time to also do it right
+This should give you this:
 
+    $ tree _test/
+    _test/
+    ├── include
+    │   └── autotools-example-4.3
+    │       └── autotools-example.h
+    └── lib
+        ├── libautotools-example-4.3.a
+        ├── libautotools-example-4.3.la
+        ├── libautotools-example-4.3.so -> libautotools-example-4.3.so.2.0.1
+        ├── libautotools-example-4.3.so.2 -> libautotools-example-4.3.so.2.0.1
+        ├── libautotools-example-4.3.so.2.0.1
+        └── pkgconfig
+            └── autotools-example-4.3.pc
+
+When you now use pkg-config, you get a nice CFLAGS and LIBS line back (I'm replacing the current path with $PWD in the output each time):
+
+    $  export PKG_CONFIG_PATH=$PWD/_test/lib/pkgconfig
+    $ pkg-config autotools-example-4.3 --cflags
+    -I$PWD/include/autotools-example-4.3
+    $ pkg-config autotools-example-4.3 --libs
+    -L$PWD/lib -lautotools-example-4.3
+
+And it means that you can do things like this now (and people who know about pkg-config will now be happy to know that they can use your library in their own favorite build environment):
+
+    $ echo -en "#include <autotools-example.h>\nmain() {} " > test.cpp
+    $ export LD_LIBRARY_PATH=$PWD/_test/lib
+    $ g++ -fPIC test.cpp -o test.o `pkg-config autotools-example-4.3 --libs --cflags`
+    $ ldd test.o 
+        linux-gate.so.1 (0xb778d000)
+        libautotools-example-4.3.so.2 => $PWD/lib/libautotools-example-4.3.so.2 (0xb7783000)
+        libstdc++.so.6 => /usr/lib/i386-linux-gnu/libstdc++.so.6 (0xb75d2000)
+        libm.so.6 => /lib/i386-linux-gnu/libm.so.6 (0xb757b000)
+        libgcc_s.so.1 => /lib/i386-linux-gnu/libgcc_s.so.1 (0xb755d000)
+        libc.so.6 => /lib/i386-linux-gnu/libc.so.6 (0xb73a6000)
+        /lib/ld-linux.so.2 (0xb778f000)
 
