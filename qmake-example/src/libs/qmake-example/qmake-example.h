@@ -1,13 +1,9 @@
 #ifndef QMAKE_EXAMPLE
 #define QMAKE_EXAMPLE
 
-#include <QObject>
-
-class QMakeExample: public QObject {
-	Q_OBJECT
+class QMakeExample {
 public:
-	explicit QMakeExample(QObject* parent = 0)
-		: QObject(parent) { }
+	explicit QMakeExample() { }
 	void hello();
 };
 

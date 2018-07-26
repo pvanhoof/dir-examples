@@ -6,6 +6,11 @@
 
 include(../../../qmake-example.pri)
 
+
+## In qmake we have to remove qt explicitly if we don't want it
+
+CONFIG -= qt
+
 ## We will use the standard lib template of qmake
 
 TEMPLATE = lib
@@ -38,14 +43,6 @@ TARGET = qmake-example-$${APIVERSION}
 ## version as a double quoted string
 
 QMAKE_SUBSTITUTES += config.h.in
-
-## Our example happens to use QDebug, so we need QtCore here
-
-QT = core
-
-## This is of course optional
-
-CONFIG += c++14
 
 ## We will be using libtool style libraries
 
@@ -99,9 +96,6 @@ QMAKE_PKGCONFIG_PREFIX = $${PREFIX}
 
 # Usually people take the semver version here
 QMAKE_PKGCONFIG_VERSION = $${SEMVER_VERSION}
-
-# This is what our library depends on
-QMAKE_PKGCONFIG_REQUIRES = Qt5Core
 
 ## Installation targets (the pkg-config seems to install automatically)
 

@@ -94,36 +94,23 @@ When you now use pkg-config, you get a nice CFLAGS and LIBS line back (I'm repla
 
     $ export PKG_CONFIG_PATH=$PWD/_test/lib/pkgconfig
     $ pkg-config qmake-example-4.3 --cflags
-    -I$PWD/_test//include/qmake-example-4.3 -I/usr/include/i386-linux-gnu/qt5/QtCore
-    -I/usr/include/i386-linux-gnu/qt5
+    -I$PWD/_test/include/qmake-example-4.3
     $ pkg-config qmake-example-4.3 --libs
-    -L$PWD/_test//lib -lqmake-example-4.3 -lQt5Core
+    -L$PWD/_test/lib -lqmake-example-4.3
 
-And it means that you can do things like this now (and people who know about pkg-config will now be happy to know that they can use your library in their own favorite build environment). The extra linking is mostly due to Qt5Core of course (only for the purpose of the example):
+And it means that you can do things like this now (and people who know about pkg-config will now be happy to know that they can use your library in their own favorite build environment).
 
     $ export LD_LIBRARY_PATH=$PWD/_test/lib
     $ echo -en "#include <qmake-example.h>\nmain() {} " > test.cpp
     $ g++ -fPIC test.cpp -o test.o `pkg-config qmake-example-4.3 --libs --cflags`
     $ ldd test.o 
-        linux-gate.so.1 (0xb7708000)
-        libqmake-example-4.3.so.2 => $PWD/_test/lib/libqmake-example-4.3.so.2 (0xb76fd000)
-        libQt5Core.so.5 => /usr/lib/i386-linux-gnu/sse2/libQt5Core.so.5 (0xb71e2000)
-        libstdc++.so.6 => /usr/lib/i386-linux-gnu/libstdc++.so.6 (0xb7066000)
-        libm.so.6 => /lib/i386-linux-gnu/libm.so.6 (0xb7011000)
-        libgcc_s.so.1 => /lib/i386-linux-gnu/libgcc_s.so.1 (0xb6ff3000)
-        libc.so.6 => /lib/i386-linux-gnu/libc.so.6 (0xb6e3c000)
-        libpthread.so.0 => /lib/i386-linux-gnu/libpthread.so.0 (0xb6e1f000)
-        libz.so.1 => /lib/i386-linux-gnu/libz.so.1 (0xb6e04000)
-        libicui18n.so.57 => /usr/lib/i386-linux-gnu/libicui18n.so.57 (0xb6b67000)
-        libicuuc.so.57 => /usr/lib/i386-linux-gnu/libicuuc.so.57 (0xb69b9000)
-        libpcre16.so.3 => /usr/lib/i386-linux-gnu/libpcre16.so.3 (0xb694c000)
-        libdouble-conversion.so.1 => /usr/lib/i386-linux-gnu/libdouble-conversion.so.1 (0xb6937000)
-        libdl.so.2 => /lib/i386-linux-gnu/libdl.so.2 (0xb6932000)
-        libglib-2.0.so.0 => /lib/i386-linux-gnu/libglib-2.0.so.0 (0xb6804000)
-        librt.so.1 => /lib/i386-linux-gnu/librt.so.1 (0xb67fb000)
-        /lib/ld-linux.so.2 (0xb770a000)
-        libicudata.so.57 => /usr/lib/i386-linux-gnu/libicudata.so.57 (0xb4f7d000)
-        libpcre.so.3 => /lib/i386-linux-gnu/libpcre.so.3 (0xb4f04000)
+        linux-gate.so.1 (0xb77b0000)
+        libqmake-example-4.3.so.2 => $PWD/_test/lib/libqmake-example-4.3.so.2 (0xb77a6000)
+        libstdc++.so.6 => /usr/lib/i386-linux-gnu/libstdc++.so.6 (0xb75f5000)
+        libm.so.6 => /lib/i386-linux-gnu/libm.so.6 (0xb759e000)
+        libgcc_s.so.1 => /lib/i386-linux-gnu/libgcc_s.so.1 (0xb7580000)
+        libc.so.6 => /lib/i386-linux-gnu/libc.so.6 (0xb73c9000)
+        /lib/ld-linux.so.2 (0xb77b2000)
 
 ### cmake in the cmake-example
 
@@ -145,11 +132,11 @@ To try this example out, go to the cmake-example directory and do
     [100%] Built target cmake-example
     Install the project...
     -- Install configuration: ""
-    -- Installing: $PWD/lib/libcmake-example-4.3.so.2.1.0
-    -- Up-to-date: $PWD/lib/libcmake-example-4.3.so.2
-    -- Up-to-date: $PWD/lib/libcmake-example-4.3.so
-    -- Up-to-date: $PWD/include/cmake-example-4.3/cmake-example.h
-    -- Up-to-date: $PWD/lib/pkgconfig/cmake-example-4.3.pc
+    -- Installing: $PWD/_test/lib/libcmake-example-4.3.so.2.1.0
+    -- Up-to-date: $PWD/_test/lib/libcmake-example-4.3.so.2
+    -- Up-to-date: $PWD/_test/lib/libcmake-example-4.3.so
+    -- Up-to-date: $PWD/_test/include/cmake-example-4.3/cmake-example.h
+    -- Up-to-date: $PWD/_test/lib/pkgconfig/cmake-example-4.3.pc
 
 This should give you this:
 
@@ -168,9 +155,9 @@ This should give you this:
 When you now use pkg-config, you get a nice CFLAGS and LIBS line back (I'm replacing the current path with $PWD in the output each time):
 
     $ pkg-config cmake-example-4.3 --cflags
-    -I$PWD/include/cmake-example-4.3
+    -I$PWD/_test/include/cmake-example-4.3
     $ pkg-config cmake-example-4.3 --libs
-    -L$PWD/lib -lcmake-example-4.3
+    -L$PWD/_test/lib -lcmake-example-4.3
 
 And it means that you can do things like this now (and people who know about pkg-config will now be happy to know that they can use your library in their own favorite build environment):
 
@@ -178,7 +165,7 @@ And it means that you can do things like this now (and people who know about pkg
     $ g++ -fPIC test.cpp -o test.o `pkg-config cmake-example-4.3 --libs --cflags`
     $ ldd test.o
         linux-gate.so.1 (0xb7729000)
-        libcmake-example-4.3.so.2 => $PWD/lib/libcmake-example-4.3.so.2 (0xb771f000)
+        libcmake-example-4.3.so.2 => $PWD/_test/lib/libcmake-example-4.3.so.2 (0xb771f000)
         libstdc++.so.6 => /usr/lib/i386-linux-gnu/libstdc++.so.6 (0xb756e000)
         libm.so.6 => /lib/i386-linux-gnu/libm.so.6 (0xb7517000)
         libgcc_s.so.1 => /lib/i386-linux-gnu/libgcc_s.so.1 (0xb74f9000)
@@ -222,9 +209,9 @@ When you now use pkg-config, you get a nice CFLAGS and LIBS line back (I'm repla
 
     $  export PKG_CONFIG_PATH=$PWD/_test/lib/pkgconfig
     $ pkg-config autotools-example-4.3 --cflags
-    -I$PWD/include/autotools-example-4.3
+    -I$PWD/_test/include/autotools-example-4.3
     $ pkg-config autotools-example-4.3 --libs
-    -L$PWD/lib -lautotools-example-4.3
+    -L$PWD/_test/lib -lautotools-example-4.3
 
 And it means that you can do things like this now (and people who know about pkg-config will now be happy to know that they can use your library in their own favorite build environment):
 
@@ -233,7 +220,7 @@ And it means that you can do things like this now (and people who know about pkg
     $ g++ -fPIC test.cpp -o test.o `pkg-config autotools-example-4.3 --libs --cflags`
     $ ldd test.o 
         linux-gate.so.1 (0xb778d000)
-        libautotools-example-4.3.so.2 => $PWD/lib/libautotools-example-4.3.so.2 (0xb7783000)
+        libautotools-example-4.3.so.2 => $PWD/_test/lib/libautotools-example-4.3.so.2 (0xb7783000)
         libstdc++.so.6 => /usr/lib/i386-linux-gnu/libstdc++.so.6 (0xb75d2000)
         libm.so.6 => /lib/i386-linux-gnu/libm.so.6 (0xb757b000)
         libgcc_s.so.1 => /lib/i386-linux-gnu/libgcc_s.so.1 (0xb755d000)
