@@ -1,3 +1,7 @@
+### We need this for things like CMAKE_INSTALL_LIBDIR
+
+include(GNUInstallDirs)
+
 ## We get the CMAKE_EXAMPLE_MAJOR_VERSION, CMAKE_EXAMPLE_MINOR_VERSION,
 ## CMAKE_EXAMPLE_PATCH_VERSION, CMAKE_EXAMPLE_CURRENT_VERSION,
 ## CMAKE_EXAMPLE_REVISION_VERSION, CMAKE_EXAMPLE_AGE_VERSION and we
@@ -42,7 +46,7 @@ install (TARGETS cmake-example
 
 ## This installs our library to the lib directory (typically /usr/lib)
 
-             LIBRARY DESTINATION lib
+             LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
 
 ## This installs our library's headers to a API version specific location
 
@@ -54,9 +58,6 @@ CONFIGURE_FILE("cmake-example.pc.in" "cmake-example-${CMAKE_EXAMPLE_APIVERSION}.
 
 ## This installs the pkg-config file to the right location
 
-set(INSTALL_PKGCONFIG_DIR "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig"
-             CACHE PATH "Installation directory for pkgconfig (.pc) files")
-
 install(FILES cmake-example-${CMAKE_EXAMPLE_APIVERSION}.pc
-             DESTINATION "${INSTALL_PKGCONFIG_DIR}")
+             DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
 
