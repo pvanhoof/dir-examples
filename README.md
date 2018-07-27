@@ -1,70 +1,140 @@
 # Doing It Right examples
 
-The DIR examples are examples for various build environments on how
-to create a good project structure that will build libraries that
-are properly versioned with libtool, have a pkg-config file and that
-have a so called API version in the library's name.
+The DIR examples are examples for various build environments on how to create a good project structure that will build libraries that are properly versioned with libtool, have a pkg-config file and that have a so called API version in the library's name.
 
-Information on this can be found in the Autotools Mythbuster docs:
-https://autotools.io/libtool/version.html
+Information on this can be found in the [Autotools Mythbuster docs](https://autotools.io/libtool/version.html), the [libtool docs on versioning](https://www.gnu.org/software/libtool/manual/libtool.html#Libtool-versioning) and [FreeBSD's chapter on shared libraries](https://www.freebsd.org/doc/en/books/developers-handbook/policies-shlib.html). I tried to ensure that what is written here will work for all three and with all of the build environments in the examples.
 
 ## What is right?
 
-In the examples I try to follow as much as possible the Autotools
-Mythbuster docs (https://autotools.io/libtool/version.html)
+In the examples I try to follow as much as possible the [Autotools Mythbuster docs](https://autotools.io/libtool/version.html), the [libtool docs on versioning](https://www.gnu.org/software/libtool/manual/libtool.html#Libtool-versioning) and [FreeBSD's chapter on shared libraries](https://www.freebsd.org/doc/en/books/developers-handbook/policies-shlib.html).
 
-You'll notice that a library called package will in /usr/lib often be
-called something like libpackage-4.3.so.2.1.0
+### libpackage-4.3.so.2.1.0, what is what?
 
-We call the 4.3 part the API version (the APIVERSION), and the 2.1.0 the current,
-age and revision version (the ABI-version or VERSION).
+You'll notice that a library called package will in /usr/lib often be called something like libpackage-4.3.so.2.1.0
 
-The document libtool/version.html on autotools.io states:
+We call the 4.3 part the API version (the APIVERSION), and the 2.1.0 the current, age and revision version (the ABI-version or VERSION).
 
-The rules of thumb, when dealing with these values are:
+I will explain these examples using [semantic versioning](https://semver.org) for the APIVERSION and libtool's current, revision, age for the VERSION.
 
-* Increase the current value whenever an interface has been added, removed or changed.
-* Always increase the revision value.
-* Increase the age value only if the changes made to the ABI are backward compatible.
+Noting that with [libtool's -version-info feature](https://www.gnu.org/software/libtool/manual/libtool.html#Libtool-versioning) the values that you fill in for current, age and revision will not necessarily be identical to what ends up as suffix of the so's filename. The formula to form the filename's suffix is for libtool: "(current - age).age.revision". This means that for libpackage-APIVERSION.so.2.1.0, you need current=3, revision=0 and age=1.
 
-For the API version I will use the rules from http://semver.org:
+### The VERSION part
 
-Given a version number MAJOR.MINOR.PATCH, increment the:
+The document [libtool/version.html](https://autotools.io/libtool/version.html) on autotools.io states:
 
-1. MAJOR version when you make incompatible API changes,
-2. MINOR version when you add functionality in a backwards-compatible manner, and
-3. PATCH version when you make backwards-compatible bug fixes.
+> The rules of thumb, when dealing with these values are:
+> 
+> * Increase the current value whenever an interface has been added, removed or changed.
+> * Always increase the revision value.
+> * Increase the age value only if the changes made to the ABI are backward compatible.
 
-Many people use many build environments (autotools, qmake, cmake, meson, you name it).
-Nowadays almost all of those build environments support pkg-config out of the box. I
-consider it a necessity to ship with a useful and correct pkg-config .pc file.
+The [Updating-version-info part of libtool's documentation](https://www.gnu.org/software/libtool/manual/libtool.html#Updating-version-info) states:
 
-When you have an API then that API can change over time. You typically want
-to version those API changes so that the users of your library can adopt to
-newer versions of the API while at the same time still using older versions of
-the API. For this we need to follow 4.3. Multiple libraries versions of the
-Autotools Mythbuster documentation (https://autotools.io/libtool/version.html)
-which states:
+> 1. Start with version information of ‘0:0:0’ for each libtool library.
+> 2. Update the version information only immediately before a public release of your software. More frequent updates are unnecessary, and only guarantee that the current interface number gets larger faster.
+> 3. If the library source code has changed at all since the last update, then increment revision (‘c:r:a’ becomes ‘c:r+1:a’).
+> 4. If any interfaces have been added, removed, or changed since the last update, increment current, and set revision to 0.
+> 5. If any interfaces have been added since the last public release, then increment age.
+> 6. If any interfaces have been removed or changed since the last public release, then set age to 0.
 
-In this situation, the best option is to append part of the library's version information to the library's name, which is exemplified by Glib's libglib-2.0.so.0 soname. To do so, the declaration in the Makefile.am has to be like this:
+### The APIVERSION part
 
-    lib_LTLIBRARIES = libtest-1.0.la
-    
-    libtest_1_0_la_LDFLAGS = -version-info 0:0:0
+For the API version I will use the rules from [semver.org](https://semver.org). You can also use the semver rules for your package's version:
 
-I consider it a necessity to ship API headers in a per API-version different
-location (like /usr/include/glib-2.0). This means that your API version number
-must be part of the include-path. This implies that the pkg-config .pc file
-must also be versioned (like /usr/lib/pkgconfig/glib-2.0.pc)
+> Given a version number MAJOR.MINOR.PATCH, increment the:
+> 
+> 1. MAJOR version when you make incompatible API changes,
+> 2. MINOR version when you add functionality in a backwards-compatible manner, and
+> 3. PATCH version when you make backwards-compatible bug fixes.
 
-For example using earlier mentioned API-version 4.3, /usr/include/package-4.3 for
-/usr/lib/libpackage-4.3.so(.2.1.0) having /usr/lib/pkg-config/package-4.3.pc
+When you have an API then that API can change over time. You typically want to version those API changes so that the users of your library can adopt to newer versions of the API while at the same time still using older versions of the API. For this we need to follow section 4.3. called "multiple libraries versions" of the [Autotools Mythbuster documentation](https://autotools.io/libtool/version.html). It states:
+
+> In this situation, the best option is to append part of the library's version information to the library's name, which is exemplified by Glib's libglib-2.0.so.0 > soname. To do so, the declaration in the Makefile.am has to be like this:
+> 
+>     lib_LTLIBRARIES = libtest-1.0.la
+>     
+>     libtest_1_0_la_LDFLAGS = -version-info 0:0:0
+
+### The pkg-config file
+
+Many people use many build environments (autotools, qmake, cmake, meson, you name it). Nowadays almost all of those build environments support pkg-config out of the box. I consider it a necessity to ship with a useful and correct pkg-config .pc file. The filename should be /usr/lib/pkgconfig/package-APIVERSION.pc for a libpackage-APIVERSION.so.VERSION. In our example that means /usr/lib/pkgconfig/package-4.3.pc. We use pkg-config package-4.3 --cflags --libs for example.
+
+Examples are GLib's pkg-config file, located at /usr/lib/pkgconfig/glib-2.0.pc
+
+### The include path
+
+I consider it a necessity to ship API headers in a per API-version different location (like for example GLib's, at /usr/include/glib-2.0). This means that your API version number must be part of the include-path.
+
+For example using earlier mentioned API-version 4.3, /usr/include/package-4.3 for /usr/lib/libpackage-4.3.so(.2.1.0) having /usr/lib/pkg-config/package-4.3.pc
+
+## What will the linker typically link with?
+
+The linker will for -lpackage-4.3 typically link with /usr/lib/libpackage-4.3.so.2 or with libpackage-APIVERSION.so.(current - age). Noting that the (current - age) calculation is often (for example in cmake) referred to as the SOVERSION.
+
+## What is wrong?
+
+### Not doing any versioning
+
+Without versioning you can't make any API or ABI changes that wont break all your users' code in a possibly managable way. If you do decide not to do any versioning, then at least also don't put anything behind the .so part of your so's filename. At least you wont break things in spectacular ways.
+
+### Coming up with your own versioning scheme
+
+Knowing it better than the rest of the world will make everything you do break with what the entire rest of the world does. You shouldn't congratulate yourself with that. The only thing that can be said about it is that it probably makes little sense (and that others will probably start ignoring your work). Your mileage may vary.
+
+### Using your package's (semver) version for current, revision, age
+
+This is similarly wrong to 'Coming up with your own versioning scheme'.
+
+The [Libtool documentation on updating version info](https://www.gnu.org/software/libtool/manual/libtool.html#Updating-version-info) is clear about this:
+
+> Never try to set the interface numbers so that they correspond to the release number of your package. This is an abuse that only fosters misunderstanding of the purpose of library versions.
+
+## What isn't wrong?
+
+### Not having a APIVERSION at all
+
+It isn't wrong not to have an APIVERSION. It however means that you more or less promise not to ever break API. Because the moment you break API, you disallow your users to stay on the old API for a little longer.
+
+When you have an APIVERSION then you can allow the introduction of a new version of the API while simultaneously the old API remains available on a user's system.
+
+### Using a different naming-scheme for APIVERSION
+
+I used the MAJOR.MINOR version numbers from semver to form the APIVERSION. I did this because only the MAJOR and the MINOR are technically involved in API changes. MAJOR for breaking API changes, MINOR for API additions. The PATCH or MICRO (whatever you call it) part of a semver version number ain't technically involved (unless you are doing semantic versioning wrong - in which case see 'Coming up with your own versioning scheme').
+
+Some projects only use MAJOR. Examples are Qt which puts the MAJOR number behind the Qt part. For example libQt5Core.so.VERSION (so that's "Qt" + MAJOR + Module). The GLib world, however, uses "g" + Module + "-" + MAJOR + ".0" as they have releases like 2.2, 2.3, 2.4 that are all called libglib-2.0.so.VERSION. I guess they figured that maybe someday in their 2.x series, they could use that MINOR field?
+
+DBus seems to be using a similar thing to GLib, but then without the MINOR suffix: libdbus-1.so.VERSION. For their GLib integration they also use this: libdbus-glib-1.so.VERSION.
+
+Who is right, who is wrong doesn't matter too much for the APIVERSION. As long as there is a way to differentiate the API in a) the include path, b) the pkg-config filename and c) the library that will be linked with, so the -l parameter. Maybe someday a standard will be defined? Let's hope so.
+
+## Differences in interpretation per platform
+
+### FreeBSD
+
+FreeBSD's [Shared Libraries of Chapter 5. Source Tree Guidelines and Policies](https://www.freebsd.org/doc/en/books/developers-handbook/policies-shlib.html) states:
+
+> The three principles of shared library building are:
+> 1. Start from 1.0
+> 2. If there is a change that is backwards compatible, bump minor number (note that ELF systems ignore the minor number)
+> 3. If there is an incompatible change, bump major number
+> 
+> For instance, added functions and bugfixes result in the minor version number being bumped, while deleted functions, changed function call syntax, etc. will force the major version number to change.
+
+I think that when using libtool on a FreeBSD (when you use autotools), that the platform will provide a variant of libtool's scripts that will convert aforementioned current, revision, age rules to FreeBSD's. The same goes for the VERSION variable in cmake and qmake. Meaning that with those tree build environments, you can just use the earlier mentioned rules.
+
+I could be wrong on this, but I did found mailing list E-mails from ~ 2011 stating that this SNAFU is dealt with. Besides, the *BSD porters otherwise know what to do and you could of course always ask them about it.
+
+### Modern Linux distributions
+
+Nowadays you sometimes see things like /usr/lib/$ARCH/libpackage-APIVERSION.so linking to /lib/$ARCH/libpackage-APIVERSION.so.VERSION. I have no idea how this mechanism works. I suppose this is being done by packagers of various Linux distributions? I also don't know if there is a standard for this.
+
+I will update the examples and this document the moment I know more and/or if upstream developers need to worry about it.
 
 ## Supported build environments
 
 ### qmake in the qmake-example
 
-Note that the VERSION must be (current - age).age.revision for qmake
+Note that the VERSION variable must be filled in as "(current - age).age.revision" for qmake (to get 2.1.0 at the end, you need VERSION=2.1.0 when current=3, revision=0 and age=1)
 
 To try this example out, go to the qmake-example directory and type
 
@@ -103,6 +173,9 @@ And it means that you can do things like this now (and people who know about pkg
     $ export LD_LIBRARY_PATH=$PWD/_test/lib
     $ echo -en "#include <qmake-example.h>\nmain() {} " > test.cpp
     $ g++ -fPIC test.cpp -o test.o `pkg-config qmake-example-4.3 --libs --cflags`
+
+You can see that it got linked to libqmake-example-4.3.so.2, where that 2 at the end is (current - age).
+
     $ ldd test.o 
         linux-gate.so.1 (0xb77b0000)
         libqmake-example-4.3.so.2 => $PWD/_test/lib/libqmake-example-4.3.so.2 (0xb77a6000)
@@ -114,7 +187,7 @@ And it means that you can do things like this now (and people who know about pkg
 
 ### cmake in the cmake-example
 
-Note that the VERSION must be (current - age).age.revision for cmake
+Note that the VERSION property on your library target must be filled in with "(current - age).age.revision" for cmake (to get 2.1.0 at the end, you need VERSION=2.1.0 when current=3, revision=0 and age=1. Note that in cmake you must also fill in the SOVERSION property as (current - age), so SOVERSION=2 when current=3 and age=1).
 
 To try this example out, go to the cmake-example directory and do
 
@@ -163,6 +236,9 @@ And it means that you can do things like this now (and people who know about pkg
 
     $ echo -en "#include <cmake-example.h>\nmain() {} " > test.cpp
     $ g++ -fPIC test.cpp -o test.o `pkg-config cmake-example-4.3 --libs --cflags`
+
+You can see that it got linked to libcmake-example-4.3.so.2, where that 2 at the end is the SOVERSION. This is (current - age).
+
     $ ldd test.o
         linux-gate.so.1 (0xb7729000)
         libcmake-example-4.3.so.2 => $PWD/_test/lib/libcmake-example-4.3.so.2 (0xb771f000)
@@ -174,7 +250,7 @@ And it means that you can do things like this now (and people who know about pkg
 
 ### autotools in the autotools-example
 
-Note that you pass current:revision:age directly with autotools
+Note that you pass -version-info current:revision:age directly with autotools. The libtool will translate that to (current - age).age.revision to form the so's filename (to get 2.1.0 at the end, you need current=3, revision=0, age=1).
 
 To try this example out, go to the autotools-example directory and do
 
@@ -218,6 +294,9 @@ And it means that you can do things like this now (and people who know about pkg
     $ echo -en "#include <autotools-example.h>\nmain() {} " > test.cpp
     $ export LD_LIBRARY_PATH=$PWD/_test/lib
     $ g++ -fPIC test.cpp -o test.o `pkg-config autotools-example-4.3 --libs --cflags`
+
+You can see that it got linked to libautotools-example-4.3.so.2, where that 2 at the end is (current - age).
+
     $ ldd test.o 
         linux-gate.so.1 (0xb778d000)
         libautotools-example-4.3.so.2 => $PWD/_test/lib/libautotools-example-4.3.so.2 (0xb7783000)
