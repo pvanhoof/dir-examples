@@ -2,12 +2,11 @@
 ## QMAKE_EXAMPLE_MINOR_VERSION, QMAKE_EXAMPLE_PATCH_VERSION,
 ## QMAKE_EXAMPLE_CURRENT_VERSION, QMAKE_EXAMPLE_REVISION_VERSION,
 ## QMAKE_EXAMPLE_VERSION and QMAKE_EXAMPLE_AGE_VERSION from this project-wide
-## include.
+## qmake-example.pri include file.
 
 include(../../../qmake-example.pri)
 
-
-## In qmake we have to remove qt explicitly if we don't want it
+## In qmake we have to remove qt explicitly if we don't want to link against it
 
 CONFIG -= qt
 
@@ -15,32 +14,28 @@ CONFIG -= qt
 
 TEMPLATE = lib
 
+# In qmake you need to use this VERSION variable for libtool's -version-info
+
 VERSION = $${QMAKE_EXAMPLE_VERSION}
 
 ## We will therefor also make ourselves a semver-version, to be put in
-## the config.h as a VERSION #define. Again, don't get confused about this.
+## the config.h as a VERSION #define.
 
 SEMVER_VERSION = $${QMAKE_EXAMPLE_MAJOR_VERSION}"."$${QMAKE_EXAMPLE_MINOR_VERSION}"."$${QMAKE_EXAMPLE_PATCH_VERSION}
-
-## The APIVERSION is ~ the API version. I use similar variable names as
-## in the cmake world here. Usually we can take major and minor from
-## semver for this.
-
-APIVERSION = $${QMAKE_EXAMPLE_MAJOR_VERSION}"."$${QMAKE_EXAMPLE_MINOR_VERSION}
 
 ## According to https://autotools.io/libtool/version.html, section 4.3
 ## Multiple libraries versions, we should have as target-name the API
 ## version in the library's name. The so called APIVERSION variable is
-## a perfect candidates for this.
+## a perfect candidate to use for this purpose.
 ##
 ## Noting that for example a project like GLib keeps the API version
 ## number on 2.0, while they change the minor. They say that GLib 2.4
 ## has a GLib 2.0 API, I guess (up to you when maintaining a library)
 
-TARGET = qmake-example-$${APIVERSION}
+TARGET = qmake-example-$${QMAKE_EXAMPLE_APIVERSION}
 
-## We will write a define in config.h for access to the semver.org
-## version as a double quoted string
+## We will write a define in config.h for access to the semantic version
+## as a double quoted string
 
 QMAKE_SUBSTITUTES += config.h.in
 
@@ -64,14 +59,14 @@ HEADERS = \
 
 ## We will install the headers in a API specific include path
 
-headers.path = $${PREFIX}/include/qmake-example-$${APIVERSION}
+headers.path = $${PREFIX}/include/qmake-example-$${QMAKE_EXAMPLE_APIVERSION}
 
 ## Here we put only the publicly installed headers
 
 headers.files = $${HEADERS}
 
 ## Here we will install the library to. If somebody has a better or
-## more standardized way, let me know (I don't like this much)
+## more standardized way, let me know (I don't like this very much)
 
 target.path = $${PREFIX}/lib
 

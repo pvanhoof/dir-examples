@@ -27,8 +27,8 @@ m4_define([autotools_example_patch_version],    [0])
 ##     o. Increase the age value only if the changes made to the ABI
 ##        are backward compatible.
 ##
-## For simplicity I am for now going to use the three numbers 2, 1 and 0
-## for libtool's current, revision and age.
+## For simplicity I am for now going to use the three numbers 3, 0 and 1
+## for libtool's current, revision and age (this will end up as .so.2.1.0).
 ##
 ## The point of current, revision and age are that they form your ABI
 ## version (the so called VERSION). The point of major, minor (and patch)
@@ -42,6 +42,9 @@ m4_define([autotools_example_age_version],      [1])
 
 m4_define([autotools_example_semversion],
           [autotools_example_major_version.autotools_example_minor_version.autotools_example_patch_version])
+
+## Usually we can take major and minor from semver for the APIVERSION.
+
 m4_define([autotools_example_apiversion],
           [autotools_example_major_version.autotools_example_minor_version])
 

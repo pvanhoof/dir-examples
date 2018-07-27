@@ -28,8 +28,8 @@ set(CMAKE_EXAMPLE_PATCH_VERSION 0)
 ##     o. Increase the age value only if the changes made to the ABI
 ##        are backward compatible.
 ##
-## For simplicity I am for now going to use the three numbers 2, 1 and 0
-## for libtool's current, revision and age.
+## For simplicity I am for now going to use the three numbers 3, 0 and 1
+## for libtool's current, revision and age (this will end up as .so.2.1.0).
 ##
 ## The point of current, revision and age are that they form your ABI
 ## version (the so called VERSION). The point of major, minor (and patch)
@@ -47,11 +47,8 @@ math(EXPR CMAKE_EXAMPLE_SOVERSION "${CMAKE_EXAMPLE_CURRENT_VERSION} - ${CMAKE_EX
 # version to pass as VERSION is (current - age).age.revision
 set(CMAKE_EXAMPLE_VERSION ${CMAKE_EXAMPLE_SOVERSION}.${CMAKE_EXAMPLE_AGE_VERSION}.${CMAKE_EXAMPLE_REVISION_VERSION})
 
-## The APIVERSION is ~ the API version. Usually we can take major
-## and minor from semver for this.
+## Usually we can take major and minor from semver for the APIVERSION.
 
 set(CMAKE_EXAMPLE_APIVERSION ${CMAKE_EXAMPLE_MAJOR_VERSION}.${CMAKE_EXAMPLE_MINOR_VERSION})
 
-
- 
 add_subdirectory (src)
