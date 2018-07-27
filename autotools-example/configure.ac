@@ -97,9 +97,8 @@ AC_CONFIG_HEADERS([config.h])
 ## In autotools we need to specify which build-files and such to generate for us
 
 AC_CONFIG_FILES([
-
-		  Makefile
-		  src/Makefile
+          Makefile
+          src/Makefile
           src/libs/Makefile
           src/libs/autotools-example/Makefile
           src/libs/autotools-example/autotools-example.pc])
