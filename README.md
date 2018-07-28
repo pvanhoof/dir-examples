@@ -91,7 +91,7 @@ The [Libtool documentation on updating version info](https://www.gnu.org/softwar
 
 ### Refusing or forgetting to increase the current and/or SOVERSION on breaking ABI changes
 
-The current part of the VERSION (current, revision and age) is the most significant field.
+The current part of the VERSION (current, revision and age) is the most significant field. It's usually also involved in forming the so called SOVERSION, which in turn is used by the linker to know with which ABI version to link. That makes it ... damn important.
 
 Some people think 'all this is just too complicated for me', 'I will just refuse to do anything and always release using the same version numbers'. That goes spectacularly wrong whenever you made ABI incompatible changes. It's similarly wrong to 'Coming up with your own versioning scheme'.
 
@@ -140,7 +140,15 @@ Nowadays you sometimes see things like /usr/lib/$ARCH/libpackage-APIVERSION.so l
 
 I will update the examples and this document the moment I know more and/or if upstream developers need to worry about it. I think that using GNUInstallDirs in cmake, for example, makes everything go right. I have not found much for this in qmake, and in autotools you always use platform variables for such paths.
 
-## Supported build environments
+## What is this SOVERSION about?
+
+In most projects that got ported from an environment that uses GNU libtool (for example autotools) to for example cmake or meson, I saw people converting the current, revision and age parameters that they passed to the -version-info option of libtool to a string concatenated together using (current - age), age, revision as VERSION, and (current - age) as SOVERSION.
+
+I wanted to use the exact same rules for versioning for all these examples, including autotools and GNU libtool. When you don't have to care about this, then it should be fine using just SOVERSION and VERSION.
+
+I also sometimes saw variations that are incomprehensible with little explanation and magic foo invented on the spot. Those variations are probably wrong.
+
+In the example I made it so that in the root build file of the project you can change the numbers and calculation for the numbers. However. Do follow the rules for those correctly, as this versioning is about ABI compatibility. Doing this wrong can make things blow up in spectacular ways.
 
 ### qmake in the qmake-example
 
@@ -358,7 +366,7 @@ And it means that you can do things like this now (and people who know about pkg
     $ export LD_LIBRARY_PATH=$PWD/_test/lib/i386-linux-gnu
     $ g++ -fPIC test.cpp -o test.o `pkg-config meson-example-4.3 --libs --cflags`
 
-You can see that it got linked to libmeson-example-4.3.so.2, where that 2 at the end is (current - age).
+You can see that it got linked to libmeson-example-4.3.so.2, where that 2 at the end is the soversion. This is (current - age).
 
     $ ldd test.o 
         linux-gate.so.1 (0xb772e000)
