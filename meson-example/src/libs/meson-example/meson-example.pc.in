@@ -1,0 +1,10 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+
+Name: meson-example
+Description: A library demostrating doing it right in meson
+Version: @VERSION@
+Libs: -L${libdir} -lmeson-example-@MESON_EXAMPLE_API_VERSION@
+Cflags: -I${includedir}/meson-example-@MESON_EXAMPLE_API_VERSION@

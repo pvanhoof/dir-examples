@@ -1,6 +1,6 @@
 # Doing It Right examples
 
-The DIR examples are examples for various build environments on how to create a good project structure that will build libraries that are versioned with libtool, have a pkg-config file and have a so called API version in the library's name.
+The DIR examples are examples for various build environments on how to create a good project structure that will build libraries that are versioned with libtool or have versioning identical to what libtool would deliver, have a pkg-config file and have a so called API version in the library's name.
 
 Information on this can be found in the [autotools mythbuster docs](https://autotools.io/libtool/version.html), the [libtool docs on versioning](https://www.gnu.org/software/libtool/manual/libtool.html#Libtool-versioning) and [freeBSD's chapter on shared libraries](https://www.freebsd.org/doc/en/books/developers-handbook/policies-shlib.html). I tried to ensure that what is written here works for with all of the build environments in the examples.
 
@@ -89,7 +89,7 @@ The [Libtool documentation on updating version info](https://www.gnu.org/softwar
 
 > Never try to set the interface numbers so that they correspond to the release number of your package. This is an abuse that only fosters misunderstanding of the purpose of library versions.
 
-### Refusing or forgetting to increase the current on breaking ABI changes
+### Refusing or forgetting to increase the current and/or SOVERSION on breaking ABI changes
 
 The current part of the VERSION (current, revision and age) is the most significant field.
 
@@ -315,4 +315,57 @@ You can see that it got linked to libautotools-example-4.3.so.2, where that 2 at
         libgcc_s.so.1 => /lib/i386-linux-gnu/libgcc_s.so.1 (0xb755d000)
         libc.so.6 => /lib/i386-linux-gnu/libc.so.6 (0xb73a6000)
         /lib/ld-linux.so.2 (0xb778f000)
+
+### meson in the meson-example
+
+Note that the version property on your library target must be filled in with "(current - age).age.revision" for meson (to get 2.1.0 at the end, you need version=2.1.0 when current=3, revision=0 and age=1. Note that in meson you must also fill in the soversion property as (current - age), so soversion=2 when current=3 and age=1).
+
+To try this example out, go to the meson-example directory and do
+
+    $ cd meson-example
+    $ mkdir -p _build/_test
+    $ cd _build
+    $ meson .. --prefix=$PWD/_test
+    $ ninja
+    $ ninja install
+
+This should give you this:
+
+    $ tree _test/
+    _test/
+    ├── include
+    │   └── meson-example-4.3
+    │       └── meson-example.h
+    └── lib
+        └── i386-linux-gnu
+            ├── libmeson-example-4.3.so -> libmeson-example-4.3.so.2.1.0
+            ├── libmeson-example-4.3.so.2 -> libmeson-example-4.3.so.2.1.0
+            ├── libmeson-example-4.3.so.2.1.0
+            └── pkgconfig
+                └── meson-example-4.3.pc
+
+When you now use pkg-config, you get a nice CFLAGS and LIBS line back (I'm replacing the current path with $PWD in the output each time):
+
+    $ export PKG_CONFIG_PATH=$PWD/_test/lib/i386-linux-gnu/pkgconfig
+    $ pkg-config meson-example-4.3 --cflags
+    -I$PWD/_test/include/meson-example-4.3
+    $ pkg-config meson-example-4.3 --libs
+    -L$PWD/_test/lib -lmeson-example-4.3
+
+And it means that you can do things like this now (and people who know about pkg-config will now be happy to know that they can use your library in their own favorite build environment):
+
+    $ echo -en "#include <meson-example.h>\nmain() {} " > test.cpp
+    $ export LD_LIBRARY_PATH=$PWD/_test/lib/i386-linux-gnu
+    $ g++ -fPIC test.cpp -o test.o `pkg-config meson-example-4.3 --libs --cflags`
+
+You can see that it got linked to libmeson-example-4.3.so.2, where that 2 at the end is (current - age).
+
+    $ ldd test.o 
+        linux-gate.so.1 (0xb772e000)
+        libmeson-example-4.3.so.2 => $PWD/_test/lib/i386-linux-gnu/libmeson-example-4.3.so.2 (0xb7724000)
+        libstdc++.so.6 => /usr/lib/i386-linux-gnu/libstdc++.so.6 (0xb7573000)
+        libm.so.6 => /lib/i386-linux-gnu/libm.so.6 (0xb751c000)
+        libgcc_s.so.1 => /lib/i386-linux-gnu/libgcc_s.so.1 (0xb74fe000)
+        libc.so.6 => /lib/i386-linux-gnu/libc.so.6 (0xb7347000)
+        /lib/ld-linux.so.2 (0xb7730000)
 
