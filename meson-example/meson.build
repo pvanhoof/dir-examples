@@ -55,17 +55,4 @@ meson_example_api_version = '@0@.@1@'.format(meson_example_major_version,
 
 meson_example_soversion = '@0@'.format(meson_example_current_version - meson_example_age_version)
 
-conf = configuration_data()
-
-conf.set('exec_prefix', get_option('prefix'))
-conf.set('bindir', join_paths(get_option('prefix'), get_option('bindir')))
-conf.set('datadir', join_paths(get_option('prefix'), get_option('datadir')))
-conf.set('datarootdir', join_paths(get_option('prefix'), get_option('datadir')))
-conf.set('includedir', join_paths(get_option('prefix'), get_option('includedir')))
-conf.set('libdir', join_paths(get_option('prefix'), get_option('libdir')))
-conf.set('libexecdir', join_paths(get_option('prefix'), get_option('libexecdir')))
-conf.set('prefix', get_option('prefix'))
-conf.set('MESON_EXAMPLE_API_VERSION', meson_example_api_version)
-conf.set('VERSION', meson.project_version())
-
 subdir('src')
