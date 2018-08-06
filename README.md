@@ -37,6 +37,13 @@ The [updating-version-info part of libtool's docs](https://www.gnu.org/software/
 > 5. If any interfaces have been added since the last public release, then increment age.
 > 6. If any interfaces have been removed or changed since the last public release, then set age to 0.
 
+When you don't care about compatibility with libtool's -version-info, then you can take the following rules for VERSION in cmake, meson and qmake:
+
+> * SOVERSION = Major version
+> * Major version: increase it if you break ABI compatibility
+> * Minor version: increase it if you add ABI compatible features
+> * Patch version: increase it for bug fix releases.
+
 ### The APIVERSION part
 
 For the API version I will use the rules from [semver.org](https://semver.org). You can also use the semver rules for your package's version:
@@ -99,6 +106,13 @@ That way, all programs that link with your shared library can after your shared 
 
 By updating the current you will basically trigger people who manage packages and their tooling to rebuild programs that link with your shared library. You actually want that the moment you made breaking ABI changes in a newer version of it.
 
+When you don't want to care about libtool's -version-info, then there is also a set of more simple to follow rules. Those rules are for VERSION:
+
+> * SOVERSION = Major version
+> * Major version: increase it if you break ABI compatibility
+> * Minor version: increase it if you add ABI compatible features
+> * Patch version: increase it for bug fix releases.
+
 ## What isn't wrong?
 
 ### Not having a APIVERSION at all
@@ -134,6 +148,8 @@ I think that when using libtool on a FreeBSD (when you use autotools), that the 
 
 I could be wrong on this, but I did find mailing list E-mails from ~ 2011 stating that this SNAFU is dealt with. Besides, the *BSD porters otherwise know what to do and you could of course always ask them about it.
 
+Note that FreeBSD's rules are or seem to be compatible with the rules for VERSION when you don't want to care about libtool's -version-info compatibility. However, when you are porting from a libtoolized project, then of course you don't want to let newer releases break against releases that have already happened.
+
 ### Modern Linux distributions
 
 Nowadays you sometimes see things like /usr/lib/$ARCH/libpackage-APIVERSION.so linking to /lib/$ARCH/libpackage-APIVERSION.so.VERSION. I have no idea how this mechanism works. I suppose this is being done by packagers of various Linux distributions? I also don't know if there is a standard for this.
@@ -142,13 +158,32 @@ I will update the examples and this document the moment I know more and/or if up
 
 As usual, I hope standards will be made and that the build environment and packaging community gets to their senses and stops leaving this into the hands of developers. I especially think about qmake, which seems to not have much at all to state that standardized installation paths must be used (not even a proper way to define a prefix).
 
+# Questions that I can imagine already exist
+
+## Why is there there a difference between APIVERSION and VERSION
+
+The API version is the version of your API. This means the version of your header files (if your programming language has such header files), the version of your API, the version of your pkgconfig file. The API is what software developers need to utilize your library.
+
+The ABI version can definitely be different and it is what programs that are compiled and installable need to utilize your library.
+
+An API breaks when recompiling the program without any changes, that consumes a libpackage-4.3.so.2, is not going to succeed at compile time. The API got broken the moment any possible way package's API was used, wont compile. Yes, any way. It means that a libpackage-5.0.so.0 should be started.
+
+An ABI breaks when without recompiling the program, replacing a libpackage-4.3.so.2.1.0 with a libpackage-4.3.so.2.2.o or a libpackage-4.3.so.2.1.1 (or later) as libpackage-4.3.so.2 is not going to succeed at runtime. For example because it would crash, or because the results would be wrong (in any way). It implies that libpackage-4.3.so.2 shouldn't be overwritten, but libpackage-4.3.so.3 should be started.
+
+For example when you change the parameter of a function in C to be a floating point from a integer, then that's an ABI change but not neccesarily an API change.
+
 ## What is this SOVERSION about?
 
 In most projects that got ported from an environment that uses GNU libtool (for example autotools) to for example cmake or meson, and in the rare cases that they did anything at all in a qmake based project, I saw people converting the current, revision and age parameters that they passed to the -version-info option of libtool to a string concatenated together using (current - age), age, revision as VERSION, and (current - age) as SOVERSION.
 
-I wanted to use the exact same rules for versioning for all these examples, including autotools and GNU libtool. When you don't have to care about this, then it should be fine using just SOVERSION and VERSION.
+I wanted to use the exact same rules for versioning for all these examples, including autotools and GNU libtool. When you don't have to (or want to) care about libtool's set of (for some people, needlessly complicated) -version-info rules, then it should be fine using just SOVERSION and VERSION using these rules.
 
-I also sometimes saw variations that are incomprehensible with little explanation and magic foo invented on the spot. Those variations are probably wrong.
+> * SOVERSION = Major version
+> * Major version: increase it if you break ABI compatibility
+> * Minor version: increase it if you add ABI compatible features
+> * Patch version: increase it for bug fix releases.
+
+I, however, also sometimes saw variations that are incomprehensible with little explanation and magic foo invented on the spot. Those variations are probably wrong.
 
 In the example I made it so that in the root build file of the project you can change the numbers and calculation for the numbers. However. Do follow the rules for those correctly, as this versioning is about ABI compatibility. Doing this wrong can make things blow up in spectacular ways.
 

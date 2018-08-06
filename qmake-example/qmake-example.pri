@@ -33,6 +33,14 @@ QMAKE_EXAMPLE_PATCH_VERSION = 0
 ## version (the so called VERSION). The point of major, minor (and patch)
 ## of semver is that it forms your API version (the so called APIVERSION).
 
+# When you don't care about compatibility with libtool's -version-info, then you can take the following rules for VERSION in cmake, meson and qmake:
+
+# * SOVERSION = Major version
+# * Major version: increase it if you break ABI compatibility
+# * Minor version: increase it if you add ABI compatible features
+# * Patch version: increase it for bug fix releases.
+
+
 QMAKE_EXAMPLE_CURRENT_VERSION = 3
 QMAKE_EXAMPLE_REVISION_VERSION = 0
 QMAKE_EXAMPLE_AGE_VERSION = 1

@@ -41,7 +41,15 @@ set(CMAKE_EXAMPLE_AGE_VERSION 1)
 
 ## This is to match exactly what the equivalent of libtool -version-info is
 
+# When you don't care about compatibility with libtool's -version-info, then you can take the following rules for VERSION in cmake, meson and qmake:
+
+# * SOVERSION = Major version
+# * Major version: increase it if you break ABI compatibility
+# * Minor version: increase it if you add ABI compatible features
+# * Patch version: increase it for bug fix releases.
+
 # soversion = current - age
+
 math(EXPR CMAKE_EXAMPLE_SOVERSION "${CMAKE_EXAMPLE_CURRENT_VERSION} - ${CMAKE_EXAMPLE_AGE_VERSION}")
 
 # version to pass as VERSION is (current - age).age.revision

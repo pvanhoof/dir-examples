@@ -42,6 +42,13 @@ meson_example_age_version = 1
 
 ## This is to match exactly what the equivalent of libtool -version-info is
 
+# When you don't care about compatibility with libtool's -version-info, then you can take the following rules for VERSION in cmake, meson and qmake:
+
+# * SOVERSION = Major version
+# * Major version: increase it if you break ABI compatibility
+# * Minor version: increase it if you add ABI compatible features
+# * Patch version: increase it for bug fix releases.
+
 meson_example_version = '@0@.@1@.@2@'.format(meson_example_current_version - meson_example_age_version,
                                              meson_example_age_version,
                                              meson_example_revision_version)
