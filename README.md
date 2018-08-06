@@ -12,9 +12,9 @@ In the examples I tried to follow as much as possible the [autotools mythbuster 
 
 You'll notice that a library called 'package' will in your LIBDIR often be called something like libpackage-4.3.so.2.1.0
 
-We call the 4.3 part the APIVERSION, and the 2.1.0 the current, age and revision VERSION (the ABI version).
+We call the 4.3 part the APIVERSION, and the 2.1.0 part the VERSION (the ABI version).
 
-I will explain these examples using [semantic versioning](https://semver.org) as APIVERSION and libtool's current, revision, age as VERSION.
+I will explain these examples using [semantic versioning](https://semver.org) as APIVERSION and either libtool's current, revision, age or a 'semantic versioning'-like alternative as VERSION (FreeBSD and builds where compatibility with libtool's -version-info ain't a requirement).
 
 Noting that with [libtool's -version-info feature](https://www.gnu.org/software/libtool/manual/libtool.html#Libtool-versioning) the values that you fill in for current, age and revision will not necessarily be identical to what ends up as suffix of the soname in LIBDIR. The formula to form the filename's suffix is, for libtool, "(current - age).age.revision". This means that for soname libpackage-APIVERSION.so.2.1.0, you need current=3, revision=0 and age=1.
 
@@ -162,15 +162,15 @@ As usual, I hope standards will be made and that the build environment and packa
 
 ### Why is there there a difference between APIVERSION and VERSION?
 
-The API version is the version of your API. This means the version of your header files (if your programming language has such header files), the version of your API, the version of your pkgconfig file. The API is what software developers need to utilize your library.
+The API version is the version of your programmable interfaces. This means the version of your header files (if your programming language has such header files), the version of your pkgconfig file, the version of your documentation. The API is what software developers need to utilize your library.
 
 The ABI version can definitely be different and it is what programs that are compiled and installable need to utilize your library.
 
 An API breaks when recompiling the program without any changes, that consumes a libpackage-4.3.so.2, is not going to succeed at compile time. The API got broken the moment any possible way package's API was used, wont compile. Yes, any way. It means that a libpackage-5.0.so.0 should be started.
 
-An ABI breaks when without recompiling the program, replacing a libpackage-4.3.so.2.1.0 with a libpackage-4.3.so.2.2.o or a libpackage-4.3.so.2.1.1 (or later) as libpackage-4.3.so.2 is not going to succeed at runtime. For example because it would crash, or because the results would be wrong (in any way). It implies that libpackage-4.3.so.2 shouldn't be overwritten, but libpackage-4.3.so.3 should be started.
+An ABI breaks when without recompiling the program, replacing a libpackage-4.3.so.2.1.0 with a libpackage-4.3.so.2.2.0 or a libpackage-4.3.so.2.1.1 (or later) as libpackage-4.3.so.2 is not going to succeed at runtime. For example because it would crash, or because the results would be wrong (in any way). It implies that libpackage-4.3.so.2 shouldn't be overwritten, but libpackage-4.3.so.3 should be started.
 
-For example when you change the parameter of a function in C to be a floating point from a integer, then that's an ABI change but not neccesarily an API change.
+For example when you change the parameter of a function in C to be a floating point from a integer (and/or the other way around), then that's an ABI change but not neccesarily an API change.
 
 ### What is this SOVERSION about?
 
