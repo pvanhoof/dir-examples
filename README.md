@@ -132,13 +132,13 @@ FreeBSD's [Shared Libraries of Chapter 5. Source Tree Guidelines and Policies](h
 
 I think that when using libtool on a FreeBSD (when you use autotools), that the platform will provide a variant of libtool's scripts that will convert earlier mentioned current, revision and age rules to FreeBSD's. The same goes for the VERSION variable in cmake and qmake. Meaning that with those tree build environments, you can just use the rules for GNU libtool's -version-info.
 
-I could be wrong on this, but I did found mailing list E-mails from ~ 2011 stating that this SNAFU is dealt with. Besides, the *BSD porters otherwise know what to do and you could of course always ask them about it.
+I could be wrong on this, but I did find mailing list E-mails from ~ 2011 stating that this SNAFU is dealt with. Besides, the *BSD porters otherwise know what to do and you could of course always ask them about it.
 
 ### Modern Linux distributions
 
 Nowadays you sometimes see things like /usr/lib/$ARCH/libpackage-APIVERSION.so linking to /lib/$ARCH/libpackage-APIVERSION.so.VERSION. I have no idea how this mechanism works. I suppose this is being done by packagers of various Linux distributions? I also don't know if there is a standard for this.
 
-I will update the examples and this document the moment I know more and/or if upstream developers need to worry about it. I think that using GNUInstallDirs in cmake, for example, makes everything go right. I have not found much for this in qmake, and in autotools you always use platform variables for such paths.
+I will update the examples and this document the moment I know more and/or if upstream developers need to worry about it. I think that using GNUInstallDirs in cmake, for example, makes everything go right. I have not found much for this in qmake, meson seems to be doing this by default and in autotools you always use platform variables for such paths.
 
 ## What is this SOVERSION about?
 
