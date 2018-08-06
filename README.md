@@ -88,13 +88,15 @@ Without versioning you can't make any API or ABI changes that wont break all you
 
 Knowing it better than the rest of the world will in spectacular ways make everything you do break with what the entire rest of the world does. You shouldn't congratulate yourself with that. The only thing that can be said about it is that it probably makes little sense, and that others will probably start ignoring your work. Your mileage may vary.
 
-### Using your package's (semver) release numbering for current, revision, age
+### In case of libtool: using your package's (semver) release numbering for current, revision, age
 
 This is similarly wrong to 'Coming up with your own versioning scheme'.
 
 The [Libtool documentation on updating version info](https://www.gnu.org/software/libtool/manual/libtool.html#Updating-version-info) is clear about this:
 
 > Never try to set the interface numbers so that they correspond to the release number of your package. This is an abuse that only fosters misunderstanding of the purpose of library versions.
+
+This basically means that once you are using libtool, also use libtool's versioning rules.
 
 ### Refusing or forgetting to increase the current and/or SOVERSION on breaking ABI changes
 
@@ -176,7 +178,7 @@ For example when you change the parameter of a function in C to be a floating po
 
 In most projects that got ported from an environment that uses GNU libtool (for example autotools) to for example cmake or meson, and in the rare cases that they did anything at all in a qmake based project, I saw people converting the current, revision and age parameters that they passed to the -version-info option of libtool to a string concatenated together using (current - age), age, revision as VERSION, and (current - age) as SOVERSION.
 
-I wanted to use the exact same rules for versioning for all these examples, including autotools and GNU libtool. When you don't have to (or want to) care about libtool's set of (for some people, needlessly complicated) -version-info rules, then it should be fine using just SOVERSION and VERSION using these rules.
+I wanted to use the exact same rules for versioning for all these examples, including autotools and GNU libtool. When you don't have to (or want to) care about libtool's set of (for some people, needlessly complicated) -version-info rules, then it should be fine using just SOVERSION and VERSION using these rules:
 
 > * SOVERSION = Major version
 > * Major version: increase it if you break ABI compatibility
