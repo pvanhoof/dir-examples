@@ -158,9 +158,9 @@ I will update the examples and this document the moment I know more and/or if up
 
 As usual, I hope standards will be made and that the build environment and packaging community gets to their senses and stops leaving this into the hands of developers. I especially think about qmake, which seems to not have much at all to state that standardized installation paths must be used (not even a proper way to define a prefix).
 
-# Questions that I can imagine already exist
+## Questions that I can imagine already exist
 
-## Why is there there a difference between APIVERSION and VERSION
+### Why is there there a difference between APIVERSION and VERSION?
 
 The API version is the version of your API. This means the version of your header files (if your programming language has such header files), the version of your API, the version of your pkgconfig file. The API is what software developers need to utilize your library.
 
@@ -172,7 +172,7 @@ An ABI breaks when without recompiling the program, replacing a libpackage-4.3.s
 
 For example when you change the parameter of a function in C to be a floating point from a integer, then that's an ABI change but not neccesarily an API change.
 
-## What is this SOVERSION about?
+### What is this SOVERSION about?
 
 In most projects that got ported from an environment that uses GNU libtool (for example autotools) to for example cmake or meson, and in the rare cases that they did anything at all in a qmake based project, I saw people converting the current, revision and age parameters that they passed to the -version-info option of libtool to a string concatenated together using (current - age), age, revision as VERSION, and (current - age) as SOVERSION.
 
@@ -186,6 +186,8 @@ I wanted to use the exact same rules for versioning for all these examples, incl
 I, however, also sometimes saw variations that are incomprehensible with little explanation and magic foo invented on the spot. Those variations are probably wrong.
 
 In the example I made it so that in the root build file of the project you can change the numbers and calculation for the numbers. However. Do follow the rules for those correctly, as this versioning is about ABI compatibility. Doing this wrong can make things blow up in spectacular ways.
+
+## The examples
 
 ### qmake in the qmake-example
 
