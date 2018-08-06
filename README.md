@@ -2,7 +2,7 @@
 
 The DIR examples are examples for various build environments on how to create a good project structure that will build libraries that are versioned with libtool or have versioning identical to what libtool would deliver, have a pkg-config file and have a so called API version in the library's name.
 
-Information on this can be found in the [autotools mythbuster docs](https://autotools.io/libtool/version.html), the [libtool docs on versioning](https://www.gnu.org/software/libtool/manual/libtool.html#Libtool-versioning) and [freeBSD's chapter on shared libraries](https://www.freebsd.org/doc/en/books/developers-handbook/policies-shlib.html). I tried to ensure that what is written here works for with all of the build environments in the examples.
+Information on this can be found in the [autotools mythbuster docs](https://autotools.io/libtool/version.html), the [libtool docs on versioning](https://www.gnu.org/software/libtool/manual/libtool.html#Libtool-versioning) and [freeBSD's chapter on shared libraries](https://www.freebsd.org/doc/en/books/developers-handbook/policies-shlib.html). I tried to ensure that what is written here works with all of the build environments in the examples.
 
 ## What is right?
 
@@ -140,9 +140,11 @@ Nowadays you sometimes see things like /usr/lib/$ARCH/libpackage-APIVERSION.so l
 
 I will update the examples and this document the moment I know more and/or if upstream developers need to worry about it. I think that using GNUInstallDirs in cmake, for example, makes everything go right. I have not found much for this in qmake, meson seems to be doing this by default and in autotools you always use platform variables for such paths.
 
+As usual, I hope standards will be made and that the build environment and packaging community gets to their senses and stops leaving this into the hands of developers. I especially think about qmake, which seems to not have much at all to state that standardized installation paths must be used (not even a proper way to define a prefix).
+
 ## What is this SOVERSION about?
 
-In most projects that got ported from an environment that uses GNU libtool (for example autotools) to for example cmake or meson, I saw people converting the current, revision and age parameters that they passed to the -version-info option of libtool to a string concatenated together using (current - age), age, revision as VERSION, and (current - age) as SOVERSION.
+In most projects that got ported from an environment that uses GNU libtool (for example autotools) to for example cmake or meson, and in the rare cases that they did anything at all in a qmake based project, I saw people converting the current, revision and age parameters that they passed to the -version-info option of libtool to a string concatenated together using (current - age), age, revision as VERSION, and (current - age) as SOVERSION.
 
 I wanted to use the exact same rules for versioning for all these examples, including autotools and GNU libtool. When you don't have to care about this, then it should be fine using just SOVERSION and VERSION.
 
