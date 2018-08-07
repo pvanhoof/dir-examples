@@ -428,3 +428,11 @@ You can see that it got linked to libmeson-example-4.3.so.2, where that 2 at the
         libc.so.6 => /lib/i386-linux-gnu/libc.so.6 (0xb7347000)
         /lib/ld-linux.so.2 (0xb7730000)
 
+## OMG, there is something wrong in these examples
+
+Especially if you are a developer on or a maintainer of one of the build environments being explained here, I'm very interested in your feedback.
+
+I'm also absolutely willing to improve the example of your build environment. You can either send me a mail and wait for me to improve it myself, make a pull request or send me format-patch diffs.
+
+If you want to add your build environment to the examples, this is also possible. Noting that you should (try to) achieve all that the other examples also achieve.
+
