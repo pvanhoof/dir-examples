@@ -100,17 +100,17 @@ This basically means that once you are using libtool, also use libtool's version
 
 ### Refusing or forgetting to increase the current and/or SOVERSION on breaking ABI changes
 
-The current part of the VERSION (current, revision and age) is the most significant field. It's usually also involved in forming the so called SOVERSION, which in turn is used by the linker to know with which ABI version to link. That makes it ... damn important.
+The current part of the VERSION (current, revision and age) minus age, or, SOVERSION is/are the most significant field(s). The current and age are usually involved in forming the so called SOVERSION, which in turn is used by the linker to know with which ABI version to link. That makes it ... damn important.
 
 Some people think 'all this is just too complicated for me', 'I will just refuse to do anything and always release using the same version numbers'. That goes spectacularly wrong whenever you made ABI incompatible changes. It's similarly wrong to 'Coming up with your own versioning scheme'.
 
 That way, all programs that link with your shared library can after your shared library gets updated easily crash, can corrupt data and might or might not work.
 
-By updating the current you will basically trigger people who manage packages and their tooling to rebuild programs that link with your shared library. You actually want that the moment you made breaking ABI changes in a newer version of it.
+By updating the current and age, or, SOVERSION you will basically trigger people who manage packages and their tooling to rebuild programs that link with your shared library. You actually want that the moment you made breaking ABI changes in a newer version of it.
 
 When you don't want to care about libtool's -version-info, then there is also a set of more simple to follow rules. Those rules are for VERSION:
 
-> * SOVERSION = Major version
+> * SOVERSION = Major version (with these simplified set of rules, no subtracting of current with age is needed)
 > * Major version: increase it if you break ABI compatibility
 > * Minor version: increase it if you add ABI compatible features
 > * Patch version: increase it for bug fix releases.
