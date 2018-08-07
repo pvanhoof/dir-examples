@@ -76,7 +76,7 @@ For example using earlier mentioned API-version 4.3, /usr/include/package-4.3 fo
 
 ## What will the linker typically link with?
 
-The linker will for -lpackage-4.3 typically link with /usr/lib/libpackage-4.3.so.2 or with libpackage-APIVERSION.so.(current - age). Noting that the (current - age) calculation is often, for example in cmake, referred to as the SOVERSION.
+The linker will for -lpackage-4.3 typically link with /usr/lib/libpackage-4.3.so.2 or with libpackage-APIVERSION.so.(current - age). Noting that the part that is calculated as (current - age) in this example is often, for example in cmake and meson, referred to as the SOVERSION.
 
 ## What is wrong?
 
