@@ -1,12 +1,10 @@
 # Doing It Right examples
 
-The DIR examples are examples for various build environments on how to create a good project structure that will build libraries that are versioned with libtool or have versioning identical to what libtool would deliver, have a pkg-config file and have a so called API version in the library's name.
-
-Information on this can be found in the [autotools mythbuster docs](https://autotools.io/libtool/version.html), the [libtool docs on versioning](https://www.gnu.org/software/libtool/manual/libtool.html#Libtool-versioning) and [freeBSD's chapter on shared libraries](https://www.freebsd.org/doc/en/books/developers-handbook/policies-shlib.html). I tried to ensure that what is written here works with all of the build environments in the examples.
+The DIR examples are examples for various build environments on how to create a good project structure that will build libraries that are versioned with libtool or have versioning that is equivalent to what libtool would deliver, have a pkg-config file and have a so called API version in the library's name.
 
 ## What is right?
 
-In the examples I tried to follow as much as possible the [autotools mythbuster docs](https://autotools.io/libtool/version.html), the [libtool docs on versioning](https://www.gnu.org/software/libtool/manual/libtool.html#Libtool-versioning) and [freeBSD's chapter on shared libraries](https://www.freebsd.org/doc/en/books/developers-handbook/policies-shlib.html).
+Information on this can be found in the [autotools mythbuster docs](https://autotools.io/libtool/version.html), the [libtool docs on versioning](https://www.gnu.org/software/libtool/manual/libtool.html#Libtool-versioning) and [freeBSD's chapter on shared libraries](https://www.freebsd.org/doc/en/books/developers-handbook/policies-shlib.html). I tried to ensure that what is written here works with all of the build environments in the examples.
 
 ### libpackage-4.3.so.2.1.0, what is what?
 
@@ -14,13 +12,13 @@ You'll notice that a library called 'package' will in your LIBDIR often be calle
 
 We call the 4.3 part the APIVERSION, and the 2.1.0 part the VERSION (the ABI version).
 
-I will explain these examples using [semantic versioning](https://semver.org) as APIVERSION and either libtool's current, revision, age or a 'semantic versioning'-like alternative as VERSION (FreeBSD and builds where compatibility with libtool's -version-info ain't a requirement).
+I will explain these examples using [semantic versioning](https://semver.org) as APIVERSION and either libtool's current:revision:age or a [semantic versioning](https://semver.org) alternative as field for VERSION (like in FreeBSD and for build environments where compatibility with [libtool's -version-info feature](https://www.gnu.org/software/libtool/manual/libtool.html#Libtool-versioning) ain't a requirement).
 
-Noting that with [libtool's -version-info feature](https://www.gnu.org/software/libtool/manual/libtool.html#Libtool-versioning) the values that you fill in for current, age and revision will not necessarily be identical to what ends up as suffix of the soname in LIBDIR. The formula to form the filename's suffix is, for libtool, "(current - age).age.revision". This means that for soname libpackage-APIVERSION.so.2.1.0, you need current=3, revision=0 and age=1.
+Noting that with [libtool's -version-info feature](https://www.gnu.org/software/libtool/manual/libtool.html#Libtool-versioning) the values that you fill in for current, age and revision will not necessarily be identical to what ends up as suffix of the soname in LIBDIR. The formula to form the filename's suffix is, for libtool, "(current - age).age.revision". This means that for soname libpackage-APIVERSION.so.2.1.0, you would need current=3, revision=0 and age=1.
 
 ### The VERSION part
 
-The document [libtool/version.html](https://autotools.io/libtool/version.html) on [autotools.io](https://autotools.io) states:
+In case you want compatibility with or use [libtool's -version-info feature](https://www.gnu.org/software/libtool/manual/libtool.html#Libtool-versioning), the document [libtool/version.html](https://autotools.io/libtool/version.html) on [autotools.io](https://autotools.io) states:
 
 > The rules of thumb, when dealing with these values are:
 > 
@@ -28,7 +26,7 @@ The document [libtool/version.html](https://autotools.io/libtool/version.html) o
 > * Always increase the revision value.
 > * Increase the age value only if the changes made to the ABI are backward compatible.
 
-The [updating-version-info part of libtool's docs](https://www.gnu.org/software/libtool/manual/libtool.html#Updating-version-info) states:
+The [libtool's -version-info feature](https://www.gnu.org/software/libtool/manual/libtool.html#Libtool-versioning)'s [updating-version-info part of libtool's docs](https://www.gnu.org/software/libtool/manual/libtool.html#Updating-version-info) states:
 
 > 1. Start with version information of ‘0:0:0’ for each libtool library.
 > 2. Update the version information only immediately before a public release of your software. More frequent updates are unnecessary, and only guarantee that the current interface number gets larger faster.
@@ -37,12 +35,14 @@ The [updating-version-info part of libtool's docs](https://www.gnu.org/software/
 > 5. If any interfaces have been added since the last public release, then increment age.
 > 6. If any interfaces have been removed or changed since the last public release, then set age to 0.
 
-When you don't care about compatibility with libtool's -version-info, then you can take the following rules for VERSION in cmake, meson and qmake:
+When you don't care about compatibility with [libtool's -version-info feature](https://www.gnu.org/software/libtool/manual/libtool.html#Libtool-versioning), then you can take the following simplified rules for VERSION:
 
 > * SOVERSION = Major version
 > * Major version: increase it if you break ABI compatibility
 > * Minor version: increase it if you add ABI compatible features
 > * Patch version: increase it for bug fix releases.
+
+Examples when these simplified rules are or can be applicable is in build environments like cmake, meson and qmake. When you use autotools you will be using libtool and then they ain't applicable.
 
 ### The APIVERSION part
 
@@ -64,7 +64,9 @@ When you have an API, that API can change over time. You typically want to versi
 
 ### The pkg-config file
 
-Many people use many build environments (autotools, qmake, cmake, meson, you name it). Nowadays almost all of those build environments support pkg-config out of the box. I consider it a necessity to ship with a useful and correct pkg-config .pc file. The filename should be /usr/lib/pkgconfig/package-APIVERSION.pc for soname libpackage-APIVERSION.so.VERSION. In our example that means /usr/lib/pkgconfig/package-4.3.pc. We'd use the command pkg-config package-4.3 --cflags --libs, for example.
+Many people use many build environments (autotools, qmake, cmake, meson, you name it). Nowadays almost all of those build environments support pkg-config out of the box. Both for generating the file as for consuming the file for getting information about dependencies.
+
+I consider it a necessity to ship with a useful and correct pkg-config .pc file. The filename should be /usr/lib/pkgconfig/package-APIVERSION.pc for soname libpackage-APIVERSION.so.VERSION. In our example that means /usr/lib/pkgconfig/package-4.3.pc. We'd use the command pkg-config package-4.3 --cflags --libs, for example.
 
 Examples are GLib's pkg-config file, located at /usr/lib/pkgconfig/glib-2.0.pc
 
@@ -76,7 +78,7 @@ For example using earlier mentioned API-version 4.3, /usr/include/package-4.3 fo
 
 ## What will the linker typically link with?
 
-The linker will for -lpackage-4.3 typically link with /usr/lib/libpackage-4.3.so.2 or with libpackage-APIVERSION.so.(current - age). Noting that the part that is calculated as (current - age) in this example is often, for example in cmake and meson, referred to as the SOVERSION.
+The linker will for -lpackage-4.3 typically link with /usr/lib/libpackage-4.3.so.2 or with libpackage-APIVERSION.so.(current - age). Noting that the part that is calculated as (current - age) in this example is often, for example in cmake and meson, referred to as the SOVERSION. With SOVERSION the soname template in LIBDIR is libpackage-APIVERSION.so.SOVERSION.
 
 ## What is wrong?
 
@@ -86,7 +88,7 @@ Without versioning you can't make any API or ABI changes that wont break all you
 
 ### Coming up with your own versioning scheme
 
-Knowing it better than the rest of the world will in spectacular ways make everything you do break with what the entire rest of the world does. You shouldn't congratulate yourself with that. The only thing that can be said about it is that it probably makes little sense, and that others will probably start ignoring your work. Your mileage may vary.
+Knowing it better than the rest of the world will in spectacular ways make everything you do break with what the entire rest of the world does. You shouldn't congratulate yourself with that. The only thing that can be said about it is that it probably makes little sense, and that others will probably start ignoring your work. Your mileage may vary. Keep in mind that without a correct SOVERSION, certain things will simply not work correct.
 
 ### In case of libtool: using your package's (semver) release numbering for current, revision, age
 
@@ -108,7 +110,7 @@ That way, all programs that link with your shared library can after your shared 
 
 By updating the current and age, or, SOVERSION you will basically trigger people who manage packages and their tooling to rebuild programs that link with your shared library. You actually want that the moment you made breaking ABI changes in a newer version of it.
 
-When you don't want to care about libtool's -version-info, then there is also a set of more simple to follow rules. Those rules are for VERSION:
+When you don't want to care about [libtool's -version-info feature](https://www.gnu.org/software/libtool/manual/libtool.html#Libtool-versioning), then there is also a set of more simple to follow rules. Those rules are for VERSION:
 
 > * SOVERSION = Major version (with these simplified set of rules, no subtracting of current with age is needed)
 > * Major version: increase it if you break ABI compatibility
@@ -116,6 +118,14 @@ When you don't want to care about libtool's -version-info, then there is also a 
 > * Patch version: increase it for bug fix releases.
 
 ## What isn't wrong?
+
+### Not using libtool (but nonetheless doing ABI versioning right)
+
+GNU libtool was made to make certain things more easy. Nowadays many popular build environments also make things more easy. Meanwhile has GNU libtool been around for a long time. And its versioning rules, commonly known as the current:revision:age field as parameter for -verison-info, got widely adopted.
+
+What GNU libtool did was, however, not really a standard. It's is one interpretation of how to do it. And a rather complicated one, at that.
+
+Please let it be crystal clear that not using libtool does not mean that you can do ABI versioning wrong. Because very often people seem to think that they can, and think they'll still get out safely while doing ABI versioning completely wrong. This is not the case.
 
 ### Not having a APIVERSION at all
 
