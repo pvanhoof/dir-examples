@@ -12,6 +12,10 @@ include(GNUInstallDirs)
 
 add_library(cmake-example SHARED cmake-example.cpp)
 
+set(INCLUDE_INSTALL_DIR include/cmake-example-${CMAKE_EXAMPLE_APIVERSION})
+
+
+
 SET_TARGET_PROPERTIES(cmake-example PROPERTIES
 
 ## According to https://autotools.io/libtool/version.html, section 4.3
@@ -50,7 +54,7 @@ install (TARGETS cmake-example
 
 ## This installs our library's headers to a API version specific location
 
-             PUBLIC_HEADER DESTINATION include/cmake-example-${CMAKE_EXAMPLE_APIVERSION})
+             PUBLIC_HEADER DESTINATION ${INCLUDE_INSTALL_DIR})
 
 ## This generates the pkg-config file as cmake-example-4.3.pc
 
@@ -60,4 +64,23 @@ CONFIGURE_FILE("cmake-example.pc.in" "cmake-example-${CMAKE_EXAMPLE_APIVERSION}.
 
 install(FILES cmake-example-${CMAKE_EXAMPLE_APIVERSION}.pc
              DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
+
+## This generates a package config file, and a version check file
+
+include(CMakePackageConfigHelpers)
+
+configure_package_config_file(CMakeExampleConfig.cmake.in
+  ${CMAKE_CURRENT_BINARY_DIR}/CMakeExampleConfig.cmake
+  INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/CMakeExample/cmake
+  PATH_VARS INCLUDE_INSTALL_DIR)
+
+write_basic_package_version_file(
+  ${CMAKE_CURRENT_BINARY_DIR}/CMakeExampleConfigVersion.cmake
+  VERSION ${CMAKE_EXAMPLE_MAJOR_VERSION}.${CMAKE_EXAMPLE_MINOR_VERSION}.${CMAKE_EXAMPLE_PATCH_VERSION}
+  COMPATIBILITY SameMajorVersion )
+
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/CMakeExampleConfig.cmake
+              ${CMAKE_CURRENT_BINARY_DIR}/CMakeExampleConfigVersion.cmake
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/CMakeExample/cmake )
+
 

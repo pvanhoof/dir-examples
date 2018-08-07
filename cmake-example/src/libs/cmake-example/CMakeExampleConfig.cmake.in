@@ -1,0 +1,3 @@
+@PACKAGE_INIT@
+set_and_check(CMAKE_EXAMPLE_INCLUDE_DIR "@PACKAGE_INCLUDE_INSTALL_DIR@")
+check_required_components(CMakeExample)
