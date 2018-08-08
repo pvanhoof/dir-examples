@@ -123,7 +123,7 @@ When you don't want to care about [libtool's -version-info feature](https://www.
 
 GNU libtool was made to make certain things more easy. Nowadays many popular build environments also make things more easy. Meanwhile has GNU libtool been around for a long time. And its versioning rules, commonly known as the current:revision:age field as parameter for -verison-info, got widely adopted.
 
-What GNU libtool did was, however, not really a standard. It's is one interpretation of how to do it. And a rather complicated one, at that.
+What GNU libtool did was, however, not really a standard. It is one interpretation of how to do it. And a rather complicated one, at that.
 
 Please let it be crystal clear that not using libtool does not mean that you can do ABI versioning wrong. Because very often people seem to think that they can, and think they'll still get out safely while doing ABI versioning completely wrong. This is not the case.
 
