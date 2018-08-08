@@ -156,7 +156,7 @@ FreeBSD's [Shared Libraries of Chapter 5. Source Tree Guidelines and Policies](h
 > 
 > For instance, added functions and bugfixes result in the minor version number being bumped, while deleted functions, changed function call syntax, etc. will force the major version number to change.
 
-I think that when using libtool on a FreeBSD (when you use autotools), that the platform will provide a variant of libtool's scripts that will convert earlier mentioned current, revision and age rules to FreeBSD's. The same goes for the VERSION variable in cmake and qmake. Meaning that with those tree build environments, you can just use the rules for GNU libtool's -version-info.
+I think that when using libtool on a FreeBSD (when you use autotools), that the platform will provide a variant of libtool's scripts that will convert earlier mentioned current, revision and age rules to FreeBSD's. Meaning that with autotools, you can just use the rules for GNU libtool's -version-info.
 
 I could be wrong on this, but I did find mailing list E-mails from ~ 2011 stating that this SNAFU is dealt with. Besides, the *BSD porters otherwise know what to do and you could of course always ask them about it.
 
