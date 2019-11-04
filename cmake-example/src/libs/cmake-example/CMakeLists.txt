@@ -2,6 +2,9 @@
 
 include(GNUInstallDirs)
 
+### We need this for generating the .cmake files
+include(CMakePackageConfigHelpers)
+
 ## We get the CMAKE_EXAMPLE_MAJOR_VERSION, CMAKE_EXAMPLE_MINOR_VERSION,
 ## CMAKE_EXAMPLE_PATCH_VERSION, CMAKE_EXAMPLE_CURRENT_VERSION,
 ## CMAKE_EXAMPLE_REVISION_VERSION, CMAKE_EXAMPLE_AGE_VERSION and we
@@ -47,6 +50,12 @@ install (TARGETS cmake-example
 ## This installs our library to the lib directory (typically /usr/lib)
 
              LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+	     COMPONENT CMakeExample_RunTime
+	     NAMELINK_COMPONENT CMakeExample_Development
+
+## This installs the archive of the lib to the right place
+	     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+	     COMPONENT CMakeExample_Development
 
 ## This installs our library's headers to a API version specific location
 
@@ -61,3 +70,13 @@ CONFIGURE_FILE("cmake-example.pc.in" "cmake-example-${CMAKE_EXAMPLE_APIVERSION}.
 install(FILES cmake-example-${CMAKE_EXAMPLE_APIVERSION}.pc
              DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
 
+
+write_basic_package_version_file(
+	cmake-example.cmake
+	VERSION ${CMAKE_EXAMPLE_VERSION}
+	COMPATIBILITY SameMajorVersion
+)
+
+install(FILES CMakeExampleConfig.cmake
+	CMakeExampleConfigVersion.cmake
+	DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake-example/cmake )
