@@ -64,8 +64,11 @@ install (TARGETS cmake-example
              PUBLIC_HEADER DESTINATION ${INCLUDE_INSTALL_DIR})
 
 ## This generates the pkg-config file as cmake-example-4.3.pc
-
-CONFIGURE_FILE("cmake-example.pc.in" "cmake-example-${CMAKE_EXAMPLE_APIVERSION}.pc" @ONLY)
+configure_package_config_file(cmake-example.pc.in cmake-example-${CMAKE_EXAMPLE_APIVERSION}.pc
+    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig PATH_VARS
+    CMAKE_INSTALL_PREFIX
+    CMAKE_EXAMPLE_APIVERSION CMAKE_EXAMPLE_MAJOR_VERSION
+    CMAKE_EXAMPLE_MINOR_VERSION CMAKE_EXAMPLE_PATCH_VERSION)
 
 ## This installs the pkg-config file to the right location
 
