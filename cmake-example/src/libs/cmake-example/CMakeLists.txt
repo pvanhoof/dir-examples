@@ -70,13 +70,11 @@ CONFIGURE_FILE("cmake-example.pc.in" "cmake-example-${CMAKE_EXAMPLE_APIVERSION}.
 install(FILES cmake-example-${CMAKE_EXAMPLE_APIVERSION}.pc
              DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
 
-
 write_basic_package_version_file(
-	cmake-example.cmake
-	VERSION ${CMAKE_EXAMPLE_VERSION}
-	COMPATIBILITY SameMajorVersion
-)
+  CMakeExampleConfigVersion.cmake
+  VERSION ${CMAKE_EXAMPLE_VERSION}
+  COMPATIBILITY SameMajorVersion )
 
-install(FILES CMakeExampleConfig.cmake
+install(FILES CMakeExampleVersion.cmake
 	CMakeExampleConfigVersion.cmake
-	DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake-example/cmake )
+	DESTINATION ${CMAKE_INSTALL_LIBDIR}/CMakeExample/cmake )
