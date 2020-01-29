@@ -82,6 +82,6 @@ write_basic_package_version_file(
   VERSION ${CMAKE_EXAMPLE_VERSION}
   COMPATIBILITY SameMajorVersion )
 
-install(FILES CMakeExampleConfig.cmake CMakeExampleVersion.cmake
+install(FILES CMakeExampleConfig.cmake
 	CMakeExampleConfigVersion.cmake
 	DESTINATION ${CMAKE_INSTALL_LIBDIR}/CMakeExample/cmake )
