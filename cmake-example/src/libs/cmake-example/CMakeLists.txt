@@ -28,21 +28,21 @@ SET_TARGET_PROPERTIES(cmake-example PROPERTIES
 ## number on 2.0, while they change the minor. They say that GLib 2.4
 ## has a GLib 2.0 API, I guess (up to you when maintaining a library)
 
-             OUTPUT_NAME cmake-example-${CMAKE_EXAMPLE_APIVERSION}
+         OUTPUT_NAME cmake-example-${CMAKE_EXAMPLE_APIVERSION}
 
 ## This is for the ABI version (some people refer to this as the
 ## libtool -version-info version. It's the part behind the .so part.
 ## It's calculated as (current - age).age.revision.
 
-             VERSION ${CMAKE_EXAMPLE_VERSION}
+         VERSION ${CMAKE_EXAMPLE_VERSION}
 
 ## The SOVERSION is calculated as (current - age) in cmake
 
-             SOVERSION ${CMAKE_EXAMPLE_SOVERSION}
+         SOVERSION ${CMAKE_EXAMPLE_SOVERSION}
 
 ## The header files to publicly install
 
-             PUBLIC_HEADER "cmake-example.h")
+         PUBLIC_HEADER "cmake-example.h")
 
 ## We install the library itself and we install the header file to a
 ## destination that is API version specific
@@ -52,8 +52,8 @@ install (TARGETS cmake-example
 ## This installs our library to the lib directory (typically /usr/lib)
 
          LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-	     COMPONENT CMakeExample_RunTime
-	     NAMELINK_COMPONENT CMakeExample_Development
+         COMPONENT CMakeExample_RunTime
+         NAMELINK_COMPONENT CMakeExample_Development
 
 ## This installs the archive of the lib to the right place
 	     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
@@ -85,5 +85,5 @@ write_basic_package_version_file(
          COMPATIBILITY SameMajorVersion )
 
 install(FILES CMakeExampleConfig.cmake
-	     CMakeExampleConfigVersion.cmake
-	     DESTINATION ${CMAKE_INSTALL_LIBDIR}/CMakeExample/cmake )
+         CMakeExampleConfigVersion.cmake
+         DESTINATION ${CMAKE_INSTALL_LIBDIR}/CMakeExample/cmake )
