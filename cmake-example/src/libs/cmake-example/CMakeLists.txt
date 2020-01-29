@@ -56,8 +56,8 @@ install (TARGETS cmake-example
          NAMELINK_COMPONENT CMakeExample_Development
 
 ## This installs the archive of the lib to the right place
-	     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-	     COMPONENT CMakeExample_Development
+         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+         COMPONENT CMakeExample_Development
 
 ## This installs our library's headers to a API version specific location
 
