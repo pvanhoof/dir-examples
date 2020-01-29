@@ -15,6 +15,8 @@ include(CMakePackageConfigHelpers)
 
 add_library(cmake-example SHARED cmake-example.cpp)
 
+SET(INCLUDE_INSTALL_DIR include/cmake-example-${CMAKE_EXAMPLE_APIVERSION})
+
 SET_TARGET_PROPERTIES(cmake-example PROPERTIES
 
 ## According to https://autotools.io/libtool/version.html, section 4.3
@@ -59,7 +61,7 @@ install (TARGETS cmake-example
 
 ## This installs our library's headers to a API version specific location
 
-             PUBLIC_HEADER DESTINATION include/cmake-example-${CMAKE_EXAMPLE_APIVERSION})
+             PUBLIC_HEADER DESTINATION ${INCLUDE_INSTALL_DIR})
 
 ## This generates the pkg-config file as cmake-example-4.3.pc
 
@@ -70,11 +72,16 @@ CONFIGURE_FILE("cmake-example.pc.in" "cmake-example-${CMAKE_EXAMPLE_APIVERSION}.
 install(FILES cmake-example-${CMAKE_EXAMPLE_APIVERSION}.pc
              DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
 
+configure_package_config_file(CMakeExampleConfig.cmake.in
+  CMakeExampleConfig.cmake
+  INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/CMakeExample/cmake
+  PATH_VARS INCLUDE_INSTALL_DIR)
+  
 write_basic_package_version_file(
   CMakeExampleConfigVersion.cmake
   VERSION ${CMAKE_EXAMPLE_VERSION}
   COMPATIBILITY SameMajorVersion )
 
-install(FILES CMakeExampleVersion.cmake
+install(FILES CMakeExampleConfig.cmake CMakeExampleVersion.cmake
 	CMakeExampleConfigVersion.cmake
 	DESTINATION ${CMAKE_INSTALL_LIBDIR}/CMakeExample/cmake )
