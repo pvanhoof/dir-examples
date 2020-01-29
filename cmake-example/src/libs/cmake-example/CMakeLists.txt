@@ -75,7 +75,7 @@ install(FILES cmake-example-${CMAKE_EXAMPLE_APIVERSION}.pc
 configure_package_config_file(CMakeExampleConfig.cmake.in
   CMakeExampleConfig.cmake
   INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/CMakeExample/cmake
-  PATH_VARS INCLUDE_INSTALL_DIR)
+  PATH_VARS INCLUDE_INSTALL_DIR CMAKE_EXAMPLE_VERSION)
   
 write_basic_package_version_file(
   CMakeExampleConfigVersion.cmake
