@@ -51,7 +51,7 @@ install (TARGETS cmake-example
 
 ## This installs our library to the lib directory (typically /usr/lib)
 
-             LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
 	     COMPONENT CMakeExample_RunTime
 	     NAMELINK_COMPONENT CMakeExample_Development
 
@@ -61,30 +61,29 @@ install (TARGETS cmake-example
 
 ## This installs our library's headers to a API version specific location
 
-             PUBLIC_HEADER DESTINATION ${INCLUDE_INSTALL_DIR})
+         PUBLIC_HEADER DESTINATION ${INCLUDE_INSTALL_DIR})
 
 ## This generates the pkg-config file as cmake-example-4.3.pc
 configure_package_config_file(cmake-example.pc.in cmake-example-${CMAKE_EXAMPLE_APIVERSION}.pc
-    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig PATH_VARS
-    CMAKE_INSTALL_PREFIX
-    CMAKE_EXAMPLE_APIVERSION CMAKE_EXAMPLE_MAJOR_VERSION
-    CMAKE_EXAMPLE_MINOR_VERSION CMAKE_EXAMPLE_PATCH_VERSION)
+         INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig PATH_VARS
+         CMAKE_INSTALL_PREFIX
+         CMAKE_EXAMPLE_APIVERSION
+         CMAKE_EXAMPLE_MAJOR_VERSION CMAKE_EXAMPLE_MINOR_VERSION CMAKE_EXAMPLE_PATCH_VERSION)
 
 ## This installs the pkg-config file to the right location
 
 install(FILES cmake-example-${CMAKE_EXAMPLE_APIVERSION}.pc
-             DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
+         DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
 
-configure_package_config_file(CMakeExampleConfig.cmake.in
-  CMakeExampleConfig.cmake
-  INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/CMakeExample/cmake
-  PATH_VARS INCLUDE_INSTALL_DIR CMAKE_EXAMPLE_VERSION)
+configure_package_config_file(CMakeExampleConfig.cmake.in CMakeExampleConfig.cmake
+         INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/CMakeExample/cmake
+         PATH_VARS INCLUDE_INSTALL_DIR CMAKE_EXAMPLE_VERSION)
   
 write_basic_package_version_file(
-  CMakeExampleConfigVersion.cmake
-  VERSION ${CMAKE_EXAMPLE_VERSION}
-  COMPATIBILITY SameMajorVersion )
+         CMakeExampleConfigVersion.cmake
+         VERSION ${CMAKE_EXAMPLE_VERSION}
+         COMPATIBILITY SameMajorVersion )
 
 install(FILES CMakeExampleConfig.cmake
-	CMakeExampleConfigVersion.cmake
-	DESTINATION ${CMAKE_INSTALL_LIBDIR}/CMakeExample/cmake )
+	     CMakeExampleConfigVersion.cmake
+	     DESTINATION ${CMAKE_INSTALL_LIBDIR}/CMakeExample/cmake )
