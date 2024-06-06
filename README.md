@@ -438,3 +438,10 @@ I'm also absolutely willing to improve the example of your build environment. Yo
 
 If you want to add your build environment to the examples, this is also possible. Noting that you should (try to) achieve all that the other examples also achieve.
 
+If you disagree with something I wrote here, then please contact me and provide me with good argumentation with clear references to documentation and statements that are bleached from opinions. Or at least try to reach the same level of referencing and technical explaining that I did myself here. I also hope that instead of just having an opinion you will contact the maintainer and/or official mailing-list of the affected build environment.
+
+Note that in this matter there are more opinions than there is knowledge. There are also many very good practical reasons why certain things are what they are. You'll need to bring a serious amount of good technical argumentation to the table.
+
+This does not mean that you can't have an impact. In fact, it means it's more easy to have an impact: be technically well informed. This is much more easy than opinions and politics.
+
+
