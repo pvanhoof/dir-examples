@@ -2,6 +2,8 @@
 
 The DIR examples are examples for various build environments on how to create a good project structure that will build libraries that are versioned with libtool or have versioning that is equivalent to what libtool would deliver, have a pkg-config file and have a so called API version in the library's name.
 
+The concept of DIR doesn't come from MS-Dos's DIR command but instead from [Doing It Right Scuba Diving](https://en.wikipedia.org/wiki/Doing_It_Right_(scuba_diving)).
+
 ## What is right?
 
 Information on this can be found in the [autotools mythbuster docs](https://autotools.io/libtool/version.html), the [libtool docs on versioning](https://www.gnu.org/software/libtool/manual/libtool.html#Libtool-versioning) and [freeBSD's chapter on shared libraries](https://www.freebsd.org/doc/en/books/developers-handbook/policies-shlib.html). I tried to ensure that what is written here works with all of the build environments in the examples.
@@ -121,7 +123,7 @@ When you don't want to care about [libtool's -version-info feature](https://www.
 
 ### Not using libtool (but nonetheless doing ABI versioning right)
 
-GNU libtool was made to make certain things more easy. Nowadays many popular build environments also make things more easy. Meanwhile has GNU libtool been around for a long time. And its versioning rules, commonly known as the current:revision:age field as parameter for -verison-info, got widely adopted.
+GNU libtool was made to make certain things more easy. Nowadays many popular build environments also make things more easy. Meanwhile has GNU libtool been around for a long time. And its versioning rules, commonly known as the current:revision:age field as parameter for -version-info, got widely adopted.
 
 What GNU libtool did was, however, not really a standard. It is one interpretation of how to do it. And a rather complicated one, at that.
 
