@@ -2,7 +2,7 @@
 
 The DIR examples are examples for various build environments on how to create a good project structure that will build libraries that are versioned with libtool or have versioning that is equivalent to what libtool would deliver, have a pkg-config file and have a so called API version in the library's name.
 
-The concept of DIR doesn't come from MS-Dos's DIR command but instead from [Doing It Right Scuba Diving](https://en.wikipedia.org/wiki/Doing_It_Right_(scuba_diving)).
+The concept of DIR doesn't come from MS-DOS's DIR command but instead from [Doing It Right Scuba Diving](https://en.wikipedia.org/wiki/Doing_It_Right_(scuba_diving)). When doing Scuba Diving wrong, the consequences can be spectacular (you and your buddies can die). When doing libraries wrong, software that depends on your library can crash and go spectacularly wrong too. Doing It Right is therefor a good idea.
 
 ## What is right?
 
